@@ -1,5 +1,6 @@
 import React from 'react';
-const baseUrl = "localhost"
+import List from '../list';
+const baseUrl = "localhost";
 
 class Comments extends React.Component {
 
@@ -25,7 +26,11 @@ class Comments extends React.Component {
 
     render() {
         return(
-            <div>Comments Page</div>
+            <div>
+                <ul>
+                    {this.state.story && this.state.story.map((item, index) => <List />)}
+                </ul>
+            </div>
         )
     }
 }

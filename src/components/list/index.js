@@ -13,8 +13,8 @@ class List extends React.Component {
         )
     }
 
-    getNews = () => {
-        fetch(baseUrl)
+    getNews = (id) => {
+        fetch(baseUrl+id+".json")
         .then(function(response) {
             return response.json();
         })
@@ -24,8 +24,15 @@ class List extends React.Component {
     }
 
     render() {
+        const length = this.state.story.kids && this.state.story.kids.length;
         return(
-            <li>List</li>
+            <li>
+            {this.state.story &&
+                <div>
+                    <h3></h3>
+                </div>
+            }
+            </li>
         )
     }
 }
