@@ -1,35 +1,45 @@
 {
-  "name": "bridgei2i",
-  "version": "1.0.0",
-  "description": "test",
-  "main": "index.js",
-  "scripts": {
-    "start": "webpack-dev-server --config webpack.config.dev.js --port 9000",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [
-    "test"
-  ],
-  "author": "tte",
-  "license": "ISC",
+  "name": "yted",
+  "version": "0.1.0",
+  "private": true,
   "dependencies": {
-    "prop-types": "^15.7.2",
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0",
-    "react-router-dom": "^5.0.1"
+    "@lexical/react": "^0.12.2",
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/jest": "^27.5.2",
+    "@types/node": "^16.18.59",
+    "@types/react": "^18.2.31",
+    "@types/react-dom": "^18.2.14",
+    "lexical": "^0.12.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1",
+    "typescript": "^4.9.5",
+    "web-vitals": "^2.1.4"
   },
-  "devDependencies": {
-    "@babel/core": "^7.6.0",
-    "babel-loader": "^8.0.6",
-    "babel-preset-react-app": "^9.0.1",
-    "html-webpack-plugin": "^3.2.0",
-    "webpack": "^4.40.2",
-    "webpack-cli": "^3.3.9",
-    "webpack-dev-server": "^3.8.1"
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
-  "babel": {
-    "presets": [
-      "babel-preset-react-app"
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
     ]
   }
 }
