@@ -6,7 +6,7 @@
      sans-serif;
    -webkit-font-smoothing: antialiased;
    -moz-osx-font-smoothing: grayscale;
-   background: #eee;
+   background: #fff;
    padding: 0 20px;
  }
  
@@ -1773,3 +1773,35 @@
    margin-bottom: 10px;
    width: 100%;
  }
+
+ .rc-tree-treenode {
+  display: flex;
+}
+.rc-tree-treenode .rc-tree-indent {
+  position: relative;
+  align-self: stretch;
+}
+.rc-tree-treenode .rc-tree-indent .rc-tree-indent-unit {
+  position: relative;
+  height: 100%;
+}
+.rc-tree-treenode .rc-tree-indent .rc-tree-indent-unit::before {
+  position: absolute;
+  top: 100%;
+  right: -26px;
+  bottom: -100%;
+  border-right: 1px solid blue;
+  content: '';
+}
+.rc-tree-treenode .rc-tree-indent .rc-tree-indent-unit-end::before {
+  display: none;
+}
+.rc-tree-treenode-motion:not(.node-motion-appear-active) .rc-tree-indent-unit::before {
+  display: none;
+}
+.memorymap-wrapper {
+  display: flex;
+}
+.sidebar {
+  padding: 20px;
+}
