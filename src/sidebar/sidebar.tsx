@@ -1,5 +1,6 @@
 import  { useState} from 'react';
 import Tree, { TreeNode } from 'rc-tree';
+import DropDown, {DropDownItem} from '../ui/DropDown';
 import "rc-tree/assets/index.css"
 
 export default function Sidebar() {
@@ -167,22 +168,40 @@ export default function Sidebar() {
     };
 
     const MenuAction = ({}) => {
-      const [openMenu, setOpenMenu] = useState(false);
+      //const [openMenu, setOpenMenu] = useState(false);
 
       return (
-        <div >
-          <ul>
-            <li>rename</li>
-            <li>add new topic</li>
-            <li>delete</li>
-          </ul>
-        </div>
+        <DropDown
+              disabled={false}
+              buttonClassName=""
+              buttonLabel="..."
+              buttonAriaLabel="menu specialized editor node"
+              buttonIconClassName="icon humburger">
+            <DropDownItem
+                onClick={() => {;
+                }}
+                className="item">
+              <span className="text">Rename</span>
+            </DropDownItem>
+            <DropDownItem
+                onClick={() => {;
+                }}
+                className="item">
+              <span className="text">add new topic</span>
+            </DropDownItem>
+            <DropDownItem
+                onClick={() => {;
+                }}
+                className="item">
+              <span className="text">delete</span>
+            </DropDownItem>
+        </DropDown>
       )
     }
 
     const loop = (data: any) =>
       data.map((item:any) => {
-        const title = <div><span>{item.title}</span> <input type='radio' name='item.key' /></div>
+        const title = <div><span>{item.title}</span><span> {MenuAction({})}</span></div>
         if (item.children && item.children.length) {
           return (
             <TreeNode key={item.key} title={title}>
