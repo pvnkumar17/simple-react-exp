@@ -215,7 +215,6 @@ export default function Sidebar() {
     return (
         <Tree
           onDrop={onDrop}
-          //treeData={treeData}
           defaultExpandedKeys={["0-0-1"]}
           autoExpandParent
           draggable={true}

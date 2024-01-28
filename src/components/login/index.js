@@ -27,6 +27,7 @@ const Login = ({redirectTo
 
   const handleResponseData = (res) => {
     if (res.data.accessToken) {
+
       redirectTo('DASHBOARD');
     }
   };
@@ -54,7 +55,8 @@ function mapDispatchToProps(dispatch) {
   return {
     redirectTo: (page, data) => {
       dispatch({ type: page, payload: { filter: data } });
-    }
+    },
+    
   };
 }
 

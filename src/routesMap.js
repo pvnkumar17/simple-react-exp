@@ -26,10 +26,9 @@ const routesMap = {
       }
     },
   },
-
-//   DASHBOARD: {
-//     path: `/apps/dashboard`,
-//   },
+  DASHBOARD: {
+    path: `/dashboard`,
+  },
   LOGIN: `/login`,
 
 };

@@ -4,7 +4,7 @@ export default (state = 'LOGIN', action= {}) =>
    components[action.type] || state;
 
 const components = {
-  DASHBOARD: 'home',
+  DASHBOARD: 'dashboard',
   LOGIN: 'login',
   [NOT_FOUND]: 'login'
 };
