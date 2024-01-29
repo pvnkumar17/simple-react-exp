@@ -1,3 +1,7 @@
+
+import { CallApi } from '../services/apiCalls';
+import { getUserDetails } from '../services/meService';
+import { loadInit, handleRefreshSuccess } from './meAction';
 window.BrainMapSetting = window.BrainMapSetting || {};
 //exposing register settings to support legacy bu-settings
 window.BrainMapApp = {};
@@ -16,10 +20,10 @@ function initBootstrap(resolveStore) {
     return (dispatch, getState) => {
         new Promise(function(resolve, reject) {
             registerSettings(resolve)
-        // }).then(function(result) {
-        //     return new Promise((resolve, reject) => {
-        //         dispatch(loadInit(resolve));
-        //     });
+        }).then(function(result) {
+            return new Promise((resolve, reject) => {
+                dispatch(loadInit(resolve));
+            });
         }).then(function(result) {
             dispatch(authenticate());
         // }).then(function() {
@@ -38,9 +42,18 @@ function authenticate() {
     return (dispatch, getState) => {
     }
 
+};
+
+function setLoginData(data) {
+    return (dispatch, getState) => {
+        new Promise(function(resolve, reject) {
+            handleRefreshSuccess(data, dispatch, getState, resolve)
+        });
+    }
 }
 
 export const BrainMapApp = {
     initBootstrap,
     authenticate,
+    setLoginData,
 }

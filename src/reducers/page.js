@@ -6,5 +6,6 @@ export default (state = 'LOGIN', action= {}) =>
 const components = {
   DASHBOARD: 'dashboard',
   LOGIN: 'login',
+  HOME: 'home',
   [NOT_FOUND]: 'login'
 };

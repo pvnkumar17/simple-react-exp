@@ -15,10 +15,10 @@ export default {
     window.pageLoadStartTime = new Date().getTime();
     const isLogin = getState().meDetails.meState.LOGGED_IN;
 
-    if (isLogin) {
-      const redirectAction = redirect({ type: 'HOME' });
-      dispatch(redirectAction);
-    }
+    // if (isLogin) {
+    //   const redirectAction = redirect({ type: 'DASHBOARD' });
+    //   dispatch(redirectAction);
+    // }
   },
   onAfterChange: (dispatch, getState) => {
     window.scrollTo(0, 0);

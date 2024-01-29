@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
 import { CallApi } from '../../services/apiCalls';
 import { connect } from 'react-redux';
+import { BrainMapApp } from '../../actions/bootaction';
 
-const Login = ({redirectTo
+const Login = ({redirectTo, refreshToken
 }) => {
 
   const [userName, setUserName] = useState('');
@@ -27,12 +28,13 @@ const Login = ({redirectTo
 
   const handleResponseData = (res) => {
     if (res.data.accessToken) {
-
-      redirectTo('DASHBOARD');
+      refreshToken(res.data);
+      redirectTo('DASHBOARD'); //TODO redirect from setLoginData
     }
   };
 
   const handleErrorResponse = (error) => {
+    console.log(error);
   };
     
   return (
@@ -56,7 +58,7 @@ function mapDispatchToProps(dispatch) {
     redirectTo: (page, data) => {
       dispatch({ type: page, payload: { filter: data } });
     },
-    
+    refreshToken: data => dispatch(BrainMapApp.setLoginData(data)),
   };
 }
 

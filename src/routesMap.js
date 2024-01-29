@@ -12,19 +12,19 @@ window.routeSettings = {};
 const routesMap = {
   HOME: {
     path: `/`,
-    thunk: async (dispatch, getState) => {
-      const isLogin = getState().meDetails.meState.LOGGED_IN;
-      let refreshToken = getUrlParameter('redirect-token') || null;
-      if (refreshToken) {
-        refreshToken = decodeURIComponent(refreshToken);
-        sessionStorage.setItem('apiRefreshToken', refreshToken);
-        BrainMapApp.initBootstrap(null);
-        dispatch({ type: 'HOME' });
-        return;
-      } else {
-        !isLogin ? dispatch({ type: 'LOGIN' }) : dispatch({ type: 'HOME' });
-      }
-    },
+    // thunk: async (dispatch, getState) => {
+    //   const isLogin = getState().meDetails.meState.LOGGED_IN;
+    //   let refreshToken = getUrlParameter('redirect-token') || null;
+    //   if (refreshToken) {
+    //     refreshToken = decodeURIComponent(refreshToken);
+    //     sessionStorage.setItem('apiRefreshToken', refreshToken);
+    //     BrainMapApp.initBootstrap(null);
+    //     dispatch({ type: 'HOME' });
+    //     return;
+    //   } else {
+    //     !isLogin ? dispatch({ type: 'LOGIN' }) : dispatch({ type: 'HOME' });
+    //   }
+    // },
   },
   DASHBOARD: {
     path: `/dashboard`,

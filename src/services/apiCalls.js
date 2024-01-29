@@ -18,6 +18,13 @@ function buildErrorHandlerConfig(axiosConfig) {
 
 
     return config;
+};
+
+function setUserAuthToken() {
+    let token = localStorage.getItem('apiToken');
+    if(!!token){
+       axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+    }
 }
 
 function getDefaultRequestConfig(appXhrConfig) {
@@ -35,7 +42,7 @@ function getDefaultRequestConfig(appXhrConfig) {
 
     };
     return {...axiosConfig, ...appXhrConfig};
-}
+};
 
   async function directCall(webservice, config) {
 
@@ -44,15 +51,16 @@ function getDefaultRequestConfig(appXhrConfig) {
      if(config.responseType) {
         axiosConfig.responseType = config.responseType;
         axiosConfig.headers.Accept = '*/*';
-     }
+     };
+     setUserAuthToken();
      const XhrRes = await axios(webservice, axiosConfig)
          .then(function(response) {
                 response.config.successCallback(response.data);
             return response.data;
          })
          .catch(function(error) {
-            if (error){
-                handleUnauthorised(error.response);
+            if (error.config && error.config.error){
+                error.config.error(error.response);
             }
              throw error.response;
          });

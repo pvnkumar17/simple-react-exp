@@ -1,7 +1,7 @@
 import { Editor } from "../../editor/editor";
 import Sidebar from "../../sidebar/sidebar";
 
-function Dashboard() {
+function Home() {
   return (
       <div className='memorymap-wrapper'>
         <div className='sidebar'><Sidebar /></div>
@@ -10,4 +10,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default Home;
