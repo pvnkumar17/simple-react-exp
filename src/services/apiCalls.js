@@ -55,7 +55,7 @@ function getDefaultRequestConfig(appXhrConfig) {
      setUserAuthToken();
      const XhrRes = await axios(webservice, axiosConfig)
          .then(function(response) {
-                response.config.successCallback(response.data);
+            response.config.successCallback && response.config.successCallback(response.data);
             return response.data;
          })
          .catch(function(error) {

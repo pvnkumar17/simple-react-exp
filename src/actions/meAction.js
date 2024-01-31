@@ -44,7 +44,7 @@ function initializeToken(dispatch, getState, resolve) {
     initializeFromStorage();
     if (accessToken) {
         getUserDetails().then(data => {
-            userInfoSucess(data);
+            dispatch(userInfoSucess(data));
             //dispatch({ type: 'DASHBOARD', payload: { filter: {} } });
         }).catch(error => {
             throw (error);
@@ -53,13 +53,13 @@ function initializeToken(dispatch, getState, resolve) {
     } else {
         dispatch({type: 'LOGIN'});
     };
-    resolve();
+    return resolve();
 }
 
 export function handleRefreshSuccess(response, dispatch, resolve) {
     dispatch(stateUpdate({ LOGGED_IN: true, AUTHENTICATING: false }));
     setTokens(response.accessToken);
-    resolve();
+    return resolve();
 }
 
 function handleRefreshError(dispatch, getState) {
@@ -88,7 +88,7 @@ function setTokens(accessTokenStorage) {
 function initializeFromStorage() {
     // grab existing state from local storage
     // restore the me stores' state
-    setTokens(localStorage.getItem('apiToken'));
+    accessToken = localStorage.getItem('apiToken');
 }
 
 export function userInfoSucess(data) {

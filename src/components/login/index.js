@@ -29,7 +29,7 @@ const Login = ({redirectTo, refreshToken
   const handleResponseData = (res) => {
     if (res.data.accessToken) {
       refreshToken(res.data);
-      redirectTo('DASHBOARD'); //TODO redirect from setLoginData
+      //redirectTo('DASHBOARD'); //TODO redirect from setLoginData
     }
   };
 

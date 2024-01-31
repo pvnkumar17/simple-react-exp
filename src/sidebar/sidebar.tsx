@@ -1,4 +1,4 @@
-import  { useState} from 'react';
+import  { useEffect, useState} from 'react';
 import Tree, { TreeNode } from 'rc-tree';
 import DropDown, {DropDownItem} from '../ui/DropDown';
 import "rc-tree/assets/index.css"
@@ -103,6 +103,10 @@ export default function Sidebar() {
           "key": "0-2-key"
       }
   ]);
+
+  useEffect(() => {
+
+  }, [])
 
   const [openedMenuKey, setOpenedMenuKey] = useState('');
     const onDrop = (info:any) => {

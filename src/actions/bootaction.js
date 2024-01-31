@@ -36,7 +36,21 @@ function initBootstrap(resolveStore) {
                 return resolveStore();
         });
     }
-}
+};
+
+function setLoginData(data) {
+    return (dispatch, getState) => {
+        new Promise(function(resolve, reject) {
+            handleRefreshSuccess(data, dispatch, getState);
+            dispatch(loadInit(resolve));
+        })
+        //}).then(function(result) {
+            //dispatch({ type: 'DASHBOARD', payload: { filter: {} } });
+            }
+        //);
+   // }
+};
+
 function authenticate() {
     //let deferred = new $.Deferred();
     return (dispatch, getState) => {
@@ -44,13 +58,16 @@ function authenticate() {
 
 };
 
-function setLoginData(data) {
-    return (dispatch, getState) => {
-        new Promise(function(resolve, reject) {
-            handleRefreshSuccess(data, dispatch, getState, resolve)
-        });
-    }
-}
+// function setLoginData(data) {
+//     return (dispatch, getState) => {
+//         new Promise(function(resolve, reject) {
+//             handleRefreshSuccess(data, dispatch, getState, resolve)
+//         }).then(function(result) {
+//             dispatch({ type: 'DASHBOARD', payload: { filter: {} } });
+//             }
+//         );
+//     }
+// }
 
 export const BrainMapApp = {
     initBootstrap,
