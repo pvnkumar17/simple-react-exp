@@ -9,3 +9,14 @@ export const getUserDetails = () => {
     }
 }
 
+export const setUserEditorData = (id, data) => {
+    const token = localStorage.getItem('apiToken');
+    if(token){
+        return CallApi.directCall(`http://localhost:9001/v1/nodes/${id}`, {
+            method: 'PUT',
+            data: {data: data}
+        })
+    } else {
+        return null
+    }
+}

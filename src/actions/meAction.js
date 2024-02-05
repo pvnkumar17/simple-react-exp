@@ -94,3 +94,7 @@ function initializeFromStorage() {
 export function userInfoSucess(data) {
     return { type: constants.USER_INFO_SUCCESS, data };
 }
+
+export function editorInfoUpdate(data) {
+    return { type: constants.EDITOR_INFO_UPDATE, data };
+}

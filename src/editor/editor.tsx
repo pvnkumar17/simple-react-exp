@@ -1,4 +1,4 @@
-import {$getRoot, $getSelection, EditorState, $createParagraphNode, $createTextNode} from 'lexical';
+import {$getRoot, $getSelection, EditorState, $createParagraphNode, $createTextNode, CLEAR_HISTORY_COMMAND} from 'lexical';
 import {useEffect, useState} from 'react';
 import {$createHeadingNode, $createQuoteNode} from '@lexical/rich-text';
 
@@ -17,6 +17,8 @@ import ToolbarPlugin from '../plugins/ToolbarPlugin';
 import ImagesPlugin from '../plugins/ImagesPlugin';
 import YouTubePlugin from '../plugins/YouTubePlugin';
 import "./editor.css";
+import { connect } from 'react-redux';
+import { setUserEditorData } from '../services/meService';
 
 const theme = {
   // Theme styling goes here
@@ -26,27 +28,39 @@ const theme = {
 
 // When the editor changes, you can get notified via the
 // LexicalOnChangePlugin!
-function onChange(editorState: EditorState) {
-  editorState.read(() => {
-    // Read the contents of the EditorState here.
-    const root = $getRoot();
-    const selection = $getSelection();
+// function onChange(editorState: EditorState) {
+//   editorState.read(() => {
+//     // Read the contents of the EditorState here.
+//     const root = $getRoot();
+//     const selection = $getSelection();
 
-    console.log(root, selection);
-  });
-}
+//     console.log(root, selection);
+//   });
+//   setUserEditorData()
+// }
 
 // Lexical React plugins are React components, which makes them
 // highly composable. Furthermore, you can lazy load plugins if
 // desired, so you don't pay the cost for plugins until you
 // actually use them.
-function MyCustomAutoFocusPlugin() {
+function MyCustomAutoFocusPlugin({initialEditorData}:{initialEditorData:any}) {
   const [editor] = useLexicalComposerContext();
 
   useEffect(() => {
     // Focus the editor when the effect fires!
     editor.focus();
   }, [editor]);
+
+  useEffect(() => {
+    setInitialEditor();
+  }, [initialEditorData]);
+
+  const setInitialEditor = ()=> {
+        if (editor && initialEditorData.data?.text ) {
+          const newData = editor.parseEditorState(initialEditorData.data?.text);
+          editor.setEditorState(newData);
+        }
+  };
 
   return null;
 }
@@ -58,51 +72,88 @@ function onError(error: Error) {
   console.error(error);
 }
 
-function prepopulatedRichText() {
-  const root = $getRoot();
-  if (root.getFirstChild() === null) {
-    const heading = $createHeadingNode('h1');
-    heading.append($createTextNode('Analytics'));
-    root.append(heading);
-    const quote = $createQuoteNode();
-    quote.append(
-      $createTextNode(
-        `Memory mapped files provide a mechanism for a process to access files by directly incorporating file data into the process address space. The use of mapped files can significantly reduce I/O data movement since the file data does not have to be copied into process data buffers, as is done by the read and write subroutines. When more than one process maps the same file,` +
-          `its contents are shared among them, providing a low-overhead mechanism by which processes can synchronize and communicate.`,
-      ),
-    );
-    root.append(quote);
-    const paragraph = $createParagraphNode();
-    paragraph.append(
-      $createTextNode('The playground is a demo environment built with '),
-      $createTextNode('@lexical/react').toggleFormat('code'),
-      $createTextNode('.'),
-      $createTextNode(' Try typing in '),
-      $createTextNode('some text').toggleFormat('bold'),
-      $createTextNode(' with '),
-      $createTextNode('different').toggleFormat('italic'),
-      $createTextNode(' formats.'),
-    );
-    root.append(paragraph);
-    const paragraph2 = $createParagraphNode();
-    paragraph2.append(
-      $createTextNode(
-        'Make sure to check out the various plugins in the toolbar. You can also use #hashtags or @-mentions too!',
-      ),
-    );
-    root.append(paragraph2);
-  }
-}
+// function prepopulatedRichText(initialEditorData:any) {
+//   const root = $getRoot();
+//   if (root.getFirstChild() === null) {
+//     const heading = $createHeadingNode('h1');
+//     heading.append($createTextNode(initialEditorData.title));
+//     root.append(heading);
+//     const quote = $createQuoteNode();
+//     quote.append(
+//       $createTextNode(
+//         `Memory mapped files provide a mechanism for a process to access files by directly incorporating file data into the process address space. The use of mapped files can significantly reduce I/O data movement since the file data does not have to be copied into process data buffers, as is done by the read and write subroutines. When more than one process maps the same file,` +
+//           `its contents are shared among them, providing a low-overhead mechanism by which processes can synchronize and communicate.`,
+//       ),
+//     );
+//     root.append(quote);
+//     const paragraph = $createParagraphNode();
+//     paragraph.append(
+//       $createTextNode('The playground is a demo environment built with '),
+//       $createTextNode('@lexical/react').toggleFormat('code'),
+//       $createTextNode('.'),
+//       $createTextNode(' Try typing in '),
+//       $createTextNode('some text').toggleFormat('bold'),
+//       $createTextNode(' with '),
+//       $createTextNode('different').toggleFormat('italic'),
+//       $createTextNode(' formats.'),
+//     );
+//     root.append(paragraph);
+//     const paragraph2 = $createParagraphNode();
+//     paragraph2.append(
+//       $createTextNode(
+//         'Make sure to check out the various plugins in the toolbar. You can also use #hashtags or @-mentions too!',
+//       ),
+//     );
+//     root.append(paragraph2);
+//   }
+// }
 
-export function Editor() {
+const  Editor = ({initialEditorData}:{initialEditorData:any}) => {
+
+  function prepopulatedRichText() {
+    const root = $getRoot();
+    if (root.getFirstChild() === null) {
+      const heading = $createHeadingNode('h1');
+      heading.append($createTextNode(initialEditorData));
+      root.append(heading);
+    }
+  }
   const initialConfig = {
-    editorState: prepopulatedRichText,
+    editorState: initialEditorData.data?.text,
     namespace: 'MyEditor',
     nodes: [...MemoryMapNodes],
     theme: MemoryMapTheme,
     onError,
   };
   const [isLinkEditMode, setIsLinkEditMode] = useState<boolean>(false);
+  const [editorReactState, setEditorReactState] = useState("");
+  let debounceTimer:any = null;
+
+  const onChange = (editorState: EditorState) => {
+    // editorState.read(() => {
+    //   // Read the contents of the EditorState here.
+    //   const root = $getRoot();
+    //   const selection = $getSelection();
+
+    //   console.log(root, selection);
+    // });
+    const editorStateJSON = JSON.stringify(editorState.toJSON());
+    setEditorReactState(editorStateJSON);
+    //setUserEditorData(initialEditorData._id, editorState);
+  }
+
+    useEffect(() => {
+      if (debounceTimer) {
+        clearTimeout(debounceTimer);
+      }
+      if(initialEditorData._id){
+        debounceTimer = setTimeout(() => {
+          setUserEditorData(initialEditorData._id, editorReactState);
+          //console.log(event.target.value); // You can handle the changes here
+        }, 5000);
+      }
+    }, [editorReactState]);
+    
 
   return (
     <LexicalComposer initialConfig={initialConfig}>
@@ -120,9 +171,23 @@ export function Editor() {
           <HistoryPlugin />
           <ImagesPlugin />
           <YouTubePlugin />
-          <MyCustomAutoFocusPlugin />
+          <MyCustomAutoFocusPlugin initialEditorData ={initialEditorData} />
         </div>
       </div>  
     </LexicalComposer>
   );
+};
+
+function mapStateToProps(state:any, ownProps:any) {
+  return {
+    initialEditorData: state.meDetails.editorData
+  };
 }
+
+function mapDispatchToProps(dispatch:any) {
+  return {
+    //sendEditorData: (data:any) => dispatch(editorInfoUpdate(data))
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Editor)

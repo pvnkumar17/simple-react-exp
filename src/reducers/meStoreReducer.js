@@ -9,6 +9,8 @@ export default function meReducer (state = initialState.meData, action) {
       return Object.assign({}, state, {meState : action.data});
     case 'USER_INFO_SUCCESS' :
       return Object.assign({}, state, {user : action.data});
+    case 'EDITOR_INFO_UPDATE' :
+      return Object.assign({}, state, {editorData : action.data});
     default:
       return state;
   }

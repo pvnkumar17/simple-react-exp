@@ -62,7 +62,7 @@ function getDefaultRequestConfig(appXhrConfig) {
             if (error.config && error.config.error){
                 error.config.error(error.response);
             }
-             throw error.response;
+            // throw error.response;
          });
         return XhrRes; 
 }

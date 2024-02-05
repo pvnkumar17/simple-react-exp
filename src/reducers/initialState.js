@@ -19,6 +19,24 @@ export default {
 		state: {},
 		roles: [],
 		refreshTokenFlag: false,
+		editorData: {
+			"_id": "",
+			"title": "iphone1",
+			"isRoot": false,
+			"type": "file",
+			"parentId": "65b4faef1cb9c378e8f16904",
+			"children": [],
+			"userId": "65b4faed1cb9c378e8f16902",
+			"createdBy": {
+				"email": "pvnk17@gmail.com",
+			},
+			"data": {
+				"text": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"iphone1\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"heading\",\"version\":1,\"tag\":\"h1\"}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
+			},
+			"createdAt": "2024-01-27T12:48:40.094Z",
+			"updatedAt": "2024-02-05T07:57:58.393Z",
+			"__v": 0
+		},
 		meState : {
 			AUTHENTICATING: false,
 			OPENID_CONFIG: false,
