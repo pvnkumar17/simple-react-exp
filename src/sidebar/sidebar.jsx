@@ -1,115 +1,116 @@
-import  { useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import Tree, { TreeNode } from 'rc-tree';
-import DropDown, {DropDownItem} from '../ui/DropDown';
+import DropDown, { DropDownItem } from '../ui/DropDown';
 import "rc-tree/assets/index.css"
 import { connect } from 'react-redux';
-import { editorInfoUpdate } from '../actions/meAction';
+import { editorInfoUpdate, userInfoSucess } from '../actions/meAction';
+import { getUserDetails, menuActonHandle } from '../services/meService';
 
-const Sidebar = ({initialTreeData, sendEditorData}) => {
+const Sidebar = ({ initialTreeData, sendEditorData, setUserDetails }) => {
 
   const [treeData, setTreeData] = useState(initialTreeData || [
-      {
-          "title": "0-0-label",
-          "key": "0-0-key",
+    {
+      "title": "0-0-label",
+      "key": "0-0-key",
+      "children": [
+        {
+          "title": "0-0-0-label",
+          "key": "0-0-0-key",
           "children": [
-              {
-                  "title": "0-0-0-label",
-                  "key": "0-0-0-key",
-                  "children": [
-                      {
-                          "title": "0-0-0-0-label",
-                          "key": "0-0-0-0-key"
-                      },
-                      {
-                          "title": "0-0-0-1-label",
-                          "key": "0-0-0-1-key"
-                      },
-                      {
-                          "title": "0-0-0-2-label",
-                          "key": "0-0-0-2-key"
-                      }
-                  ]
-              },
-              {
-                  "title": "0-0-1-label",
-                  "key": "0-0-1-key",
-                  "children": [
-                      {
-                          "title": "0-0-1-0-label",
-                          "key": "0-0-1-0-key"
-                      },
-                      {
-                          "title": "0-0-1-1-label",
-                          "key": "0-0-1-1-key"
-                      },
-                      {
-                          "title": "0-0-1-2-label",
-                          "key": "0-0-1-2-key"
-                      }
-                  ]
-              },
-              {
-                  "title": "0-0-2-label",
-                  "key": "0-0-2-key"
-              }
+            {
+              "title": "0-0-0-0-label",
+              "key": "0-0-0-0-key"
+            },
+            {
+              "title": "0-0-0-1-label",
+              "key": "0-0-0-1-key"
+            },
+            {
+              "title": "0-0-0-2-label",
+              "key": "0-0-0-2-key"
+            }
           ]
-      },
-      {
-          "title": "0-1-label",
-          "key": "0-1-key",
+        },
+        {
+          "title": "0-0-1-label",
+          "key": "0-0-1-key",
           "children": [
-              {
-                  "title": "0-1-0-label",
-                  "key": "0-1-0-key",
-                  "children": [
-                      {
-                          "title": "0-1-0-0-label",
-                          "key": "0-1-0-0-key"
-                      },
-                      {
-                          "title": "0-1-0-1-label",
-                          "key": "0-1-0-1-key"
-                      },
-                      {
-                          "title": "0-1-0-2-label",
-                          "key": "0-1-0-2-key"
-                      }
-                  ]
-              },
-              {
-                  "title": "0-1-1-label",
-                  "key": "0-1-1-key",
-                  "children": [
-                      {
-                          "title": "0-1-1-0-label",
-                          "key": "0-1-1-0-key"
-                      },
-                      {
-                          "title": "0-1-1-1-label",
-                          "key": "0-1-1-1-key"
-                      },
-                      {
-                          "title": "0-1-1-2-label",
-                          "key": "0-1-1-2-key"
-                      }
-                  ]
-              },
-              {
-                  "title": "0-1-2-label",
-                  "key": "0-1-2-key"
-              }
+            {
+              "title": "0-0-1-0-label",
+              "key": "0-0-1-0-key"
+            },
+            {
+              "title": "0-0-1-1-label",
+              "key": "0-0-1-1-key"
+            },
+            {
+              "title": "0-0-1-2-label",
+              "key": "0-0-1-2-key"
+            }
           ]
-      },
-      {
-          "title": "0-2-label",
-          "key": "0-2-key"
-      }
+        },
+        {
+          "title": "0-0-2-label",
+          "key": "0-0-2-key"
+        }
+      ]
+    },
+    {
+      "title": "0-1-label",
+      "key": "0-1-key",
+      "children": [
+        {
+          "title": "0-1-0-label",
+          "key": "0-1-0-key",
+          "children": [
+            {
+              "title": "0-1-0-0-label",
+              "key": "0-1-0-0-key"
+            },
+            {
+              "title": "0-1-0-1-label",
+              "key": "0-1-0-1-key"
+            },
+            {
+              "title": "0-1-0-2-label",
+              "key": "0-1-0-2-key"
+            }
+          ]
+        },
+        {
+          "title": "0-1-1-label",
+          "key": "0-1-1-key",
+          "children": [
+            {
+              "title": "0-1-1-0-label",
+              "key": "0-1-1-0-key"
+            },
+            {
+              "title": "0-1-1-1-label",
+              "key": "0-1-1-1-key"
+            },
+            {
+              "title": "0-1-1-2-label",
+              "key": "0-1-1-2-key"
+            }
+          ]
+        },
+        {
+          "title": "0-1-2-label",
+          "key": "0-1-2-key"
+        }
+      ]
+    },
+    {
+      "title": "0-2-label",
+      "key": "0-2-key"
+    }
   ]);
   const [selectedNode, setSelectedNode] = useState({});
 
   useEffect(() => {
-    //setFlatTreeData(flattenDeep(initialTreeData));
-  }, [])
+    setTreeData(initialTreeData)
+  }, [initialTreeData])
 
   const [openedMenuKey, setOpenedMenuKey] = useState('');
   const onDrop = (info) => {
@@ -174,41 +175,56 @@ const Sidebar = ({initialTreeData, sendEditorData}) => {
     setTreeData(data);
   };
 
-  const MenuAction = ({}) => {
-    //const [openMenu, setOpenMenu] = useState(false);
+  const handleMenuAction = (node, type) => {
+    const payload = {
+      "type": type,
+      "parentId": node.type !== 'folder' ? node.parentId : node._id,
+      "title": `title ${Math.floor(Math.random() * 10)}`,
+      "isRoot": false
+    }
+    menuActonHandle(payload).then(res => {
+      if (res) {
+        getUserDetails().then(data => setUserDetails(data)).catch(error => {
+          throw (error);
+        })
+      }
+    }
+    );
+  };
+
+  const MenuAction = ({ item }) => {
 
     return (
       <DropDown
-            disabled={false}
-            buttonClassName=""
-            buttonLabel="..."
-            buttonAriaLabel="menu specialized editor node"
-            buttonIconClassName="icon humburger">
-          <DropDownItem
-              onClick={() => {;
-              }}
-              className="item">
-            <span className="text">Rename</span>
-          </DropDownItem>
-          <DropDownItem
-              onClick={() => {;
-              }}
-              className="item">
-            <span className="text">add new topic</span>
-          </DropDownItem>
-          <DropDownItem
-              onClick={() => {;
-              }}
-              className="item">
-            <span className="text">delete</span>
-          </DropDownItem>
+        disabled={false}
+        buttonClassName=""
+        buttonLabel="..."
+        buttonAriaLabel="menu specialized editor node"
+        buttonIconClassName="icon humburger">
+        <DropDownItem
+          onClick={() => handleMenuAction(item, 'folder')}
+          className="item">
+          <span className="text">Add folder</span>
+        </DropDownItem>
+        <DropDownItem
+          onClick={() => handleMenuAction(item, 'file')}
+          className="item">
+          <span className="text">add File</span>
+        </DropDownItem>
+        <DropDownItem
+          onClick={() => {
+            ;
+          }}
+          className="item">
+          <span className="text">delete</span>
+        </DropDownItem>
       </DropDown>
     )
   }
 
   const loop = (data) =>
     data.map((item) => {
-      const title = <div><span>{item.title}</span><span> {MenuAction({})}</span></div>
+      const title = <div><span>{item.title}</span><span> {!item.isRoot && MenuAction({ item })}</span></div>
       if (item.children && item.children.length) {
         return (
           <TreeNode key={item._id} title={title} data={item.data}>
@@ -219,7 +235,7 @@ const Sidebar = ({initialTreeData, sendEditorData}) => {
       return <TreeNode key={item._id} title={title} ></TreeNode>;
     });
 
-  const findNode = (data, id) =>  {
+  const findNode = (data, id) => {
     // for(const elem of data){
     //   if(elem._id === id){
     //     setFlatTreeData(item);
@@ -229,21 +245,21 @@ const Sidebar = ({initialTreeData, sendEditorData}) => {
     //     }
     //   }
     return data.map(item => {
-      if(item._id === id) {
+      if (item._id === id) {
         setSelectedNode(item);
         return item;
-      }else if(item.children && item.children.length){
+      } else if (item.children && item.children.length) {
         return findNode(item.children, id);
       }
     })
-      // if(data._id === id) {
-      //   setFlatTreeData(data);
-      //   return;
-      // }else if(data.children && data.children.length){
-      //   return findNode(data.children, id);
-      // }
+    // if(data._id === id) {
+    //   setFlatTreeData(data);
+    //   return;
+    // }else if(data.children && data.children.length){
+    //   return findNode(data.children, id);
+    // }
   }
-   
+
   const onNodeSelect = (keys, dataInfo) => {
     //console.log('selct', keys, dataInfo);
     const editorNode = findNode(treeData, keys[0]);
@@ -251,22 +267,22 @@ const Sidebar = ({initialTreeData, sendEditorData}) => {
   };
 
   useEffect(() => {
-    if(selectedNode.type !== 'folder'){
+    if (selectedNode.type !== 'folder') {
       sendEditorData(selectedNode);
     }
     console.log(selectedNode);
   }, [selectedNode])
 
   return (
-      <Tree
-        onDrop={onDrop}
-        defaultExpandedKeys={[treeData[0]._id]}
-        autoExpandParent
-        draggable={true}
-        onSelect={onNodeSelect}
-      >
-        {loop(treeData)}
-      </Tree>
+    <Tree
+      onDrop={onDrop}
+      defaultExpandedKeys={[treeData[0]._id]}
+      autoExpandParent
+      draggable={true}
+      onSelect={onNodeSelect}
+    >
+      {loop(treeData)}
+    </Tree>
   )
 }
 
@@ -279,7 +295,8 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    sendEditorData: (data) => dispatch(editorInfoUpdate(data))
+    sendEditorData: (data) => dispatch(editorInfoUpdate(data)),
+    setUserDetails: (data) => dispatch(userInfoSucess(data))
   };
 }
 
