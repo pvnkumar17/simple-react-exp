@@ -5,111 +5,38 @@ import "rc-tree/assets/index.css"
 import { connect } from 'react-redux';
 import { editorInfoUpdate, userInfoSucess } from '../actions/meAction';
 import { getUserDetails, menuActonHandle } from '../services/meService';
+import { convertToNestedJson } from '../utils/convertToNestedJson';
+import { cloneDeep, find } from 'lodash';
 
 const Sidebar = ({ initialTreeData, sendEditorData, setUserDetails }) => {
 
-  const [treeData, setTreeData] = useState(initialTreeData || [
+  const [treeData, setTreeData] = useState([
     {
       "title": "0-0-label",
-      "key": "0-0-key",
+      "_id": "0-0-key",
       "children": [
-        {
-          "title": "0-0-0-label",
-          "key": "0-0-0-key",
-          "children": [
-            {
-              "title": "0-0-0-0-label",
-              "key": "0-0-0-0-key"
-            },
-            {
-              "title": "0-0-0-1-label",
-              "key": "0-0-0-1-key"
-            },
-            {
-              "title": "0-0-0-2-label",
-              "key": "0-0-0-2-key"
-            }
-          ]
-        },
-        {
-          "title": "0-0-1-label",
-          "key": "0-0-1-key",
-          "children": [
-            {
-              "title": "0-0-1-0-label",
-              "key": "0-0-1-0-key"
-            },
-            {
-              "title": "0-0-1-1-label",
-              "key": "0-0-1-1-key"
-            },
-            {
-              "title": "0-0-1-2-label",
-              "key": "0-0-1-2-key"
-            }
-          ]
-        },
         {
           "title": "0-0-2-label",
-          "key": "0-0-2-key"
+          "_id": "0-0-2-key"
         }
       ]
-    },
-    {
-      "title": "0-1-label",
-      "key": "0-1-key",
-      "children": [
-        {
-          "title": "0-1-0-label",
-          "key": "0-1-0-key",
-          "children": [
-            {
-              "title": "0-1-0-0-label",
-              "key": "0-1-0-0-key"
-            },
-            {
-              "title": "0-1-0-1-label",
-              "key": "0-1-0-1-key"
-            },
-            {
-              "title": "0-1-0-2-label",
-              "key": "0-1-0-2-key"
-            }
-          ]
-        },
-        {
-          "title": "0-1-1-label",
-          "key": "0-1-1-key",
-          "children": [
-            {
-              "title": "0-1-1-0-label",
-              "key": "0-1-1-0-key"
-            },
-            {
-              "title": "0-1-1-1-label",
-              "key": "0-1-1-1-key"
-            },
-            {
-              "title": "0-1-1-2-label",
-              "key": "0-1-1-2-key"
-            }
-          ]
-        },
-        {
-          "title": "0-1-2-label",
-          "key": "0-1-2-key"
-        }
-      ]
-    },
-    {
-      "title": "0-2-label",
-      "key": "0-2-key"
     }
   ]);
+  const [flatedTreeData, setFlatedTreeData] = useState([]);
   const [selectedNode, setSelectedNode] = useState({});
 
+  const FlatenTreeData = (flatTreeData) => {
+    let flatTree = [];
+    flatTreeData.forEach(item => { flatTree = [...flatTree, ...item.flatNodes] });
+    setFlatedTreeData(flatTree);
+  }
+
   useEffect(() => {
-    setTreeData(initialTreeData)
+    if (initialTreeData) {
+      const copyTreeData = cloneDeep(initialTreeData);
+      setTreeData(convertToNestedJson(copyTreeData));
+      FlatenTreeData(copyTreeData);
+    }
   }, [initialTreeData])
 
   const [openedMenuKey, setOpenedMenuKey] = useState('');
@@ -222,53 +149,38 @@ const Sidebar = ({ initialTreeData, sendEditorData, setUserDetails }) => {
     )
   }
 
-  const loop = (data) =>
-    data.map((item) => {
-      const title = <div><span>{item.title}</span><span> {!item.isRoot && MenuAction({ item })}</span></div>
-      if (item.children && item.children.length) {
+  const loop = (data) => {
+    return data.map((item) => {
+      const title = <div><span>{item?.title}</span><span> {MenuAction({ item })}</span></div>
+      if (item?.children && item?.children.length) {
         return (
           <TreeNode key={item._id} title={title} data={item.data}>
             {loop(item.children)}
           </TreeNode>
         );
       }
-      return <TreeNode key={item._id} title={title} ></TreeNode>;
+      return <TreeNode key={item?._id} title={title} ></TreeNode>;
     });
+  }
 
   const findNode = (data, id) => {
-    // for(const elem of data){
-    //   if(elem._id === id){
-    //     setFlatTreeData(item);
-    //     return elem;
-    //   }else if(elem.children && elem.children.length){
-    //       return findNode(elem.children, id);
-    //     }
-    //   }
-    return data.map(item => {
-      if (item._id === id) {
-        setSelectedNode(item);
-        return item;
-      } else if (item.children && item.children.length) {
-        return findNode(item.children, id);
-      }
-    })
-    // if(data._id === id) {
-    //   setFlatTreeData(data);
-    //   return;
-    // }else if(data.children && data.children.length){
-    //   return findNode(data.children, id);
-    // }
+    return find(data, { _id: id });
   }
 
   const onNodeSelect = (keys, dataInfo) => {
     //console.log('selct', keys, dataInfo);
-    const editorNode = findNode(treeData, keys[0]);
+    const editorNode = findNode(flatedTreeData, keys[0]);
     console.log(editorNode);
+    setSelectedNode(editorNode);
   };
 
   useEffect(() => {
-    if (selectedNode.type !== 'folder') {
+    if (selectedNode?._id) {
+      window.location.hash = selectedNode.type === 'file' ? selectedNode._id : '';
       sendEditorData(selectedNode);
+    } else {
+      window.location.hash = '';
+      sendEditorData({});
     }
     console.log(selectedNode);
   }, [selectedNode])
@@ -286,8 +198,8 @@ const Sidebar = ({ initialTreeData, sendEditorData, setUserDetails }) => {
   )
 }
 
-
 function mapStateToProps(state, ownProps) {
+  console.log(state);
   return {
     initialTreeData: state.meDetails.user?.data
   };

@@ -1,15 +1,15 @@
-import {$getRoot, $getSelection, EditorState, $createParagraphNode, $createTextNode, CLEAR_HISTORY_COMMAND} from 'lexical';
-import {useEffect, useState} from 'react';
-import {$createHeadingNode, $createQuoteNode} from '@lexical/rich-text';
+import { $getRoot, $getSelection, EditorState, $createParagraphNode, $createTextNode, CLEAR_HISTORY_COMMAND } from 'lexical';
+import { useEffect, useState } from 'react';
+import { $createHeadingNode, $createQuoteNode } from '@lexical/rich-text';
 
-import {LexicalComposer} from '@lexical/react/LexicalComposer';
-import {AutoFocusPlugin} from '@lexical/react/LexicalAutoFocusPlugin';
-import {RichTextPlugin} from '@lexical/react/LexicalRichTextPlugin';
+import { LexicalComposer } from '@lexical/react/LexicalComposer';
+import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin';
+import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import MemoryMapNodes from '../nodes/MemoryMapNodes';
-import {ContentEditable} from '@lexical/react/LexicalContentEditable';
-import {HistoryPlugin} from '@lexical/react/LexicalHistoryPlugin';
-import {OnChangePlugin} from '@lexical/react/LexicalOnChangePlugin';
-import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
+import { ContentEditable } from '@lexical/react/LexicalContentEditable';
+import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
+import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
 import MemoryMapTheme from '../themes/MemoryMapTheme';
 import AutoEmbedPlugin from '../plugins/AutoEmbedPlugin';
@@ -43,7 +43,7 @@ const theme = {
 // highly composable. Furthermore, you can lazy load plugins if
 // desired, so you don't pay the cost for plugins until you
 // actually use them.
-function MyCustomAutoFocusPlugin({initialEditorData}:{initialEditorData:any}) {
+function MyCustomAutoFocusPlugin({ initialEditorData }: { initialEditorData: any }) {
   const [editor] = useLexicalComposerContext();
 
   useEffect(() => {
@@ -55,11 +55,11 @@ function MyCustomAutoFocusPlugin({initialEditorData}:{initialEditorData:any}) {
     setInitialEditor();
   }, [initialEditorData]);
 
-  const setInitialEditor = ()=> {
-        if (editor && initialEditorData.data?.text ) {
-          const newData = editor.parseEditorState(initialEditorData.data?.text);
-          editor.setEditorState(newData);
-        }
+  const setInitialEditor = () => {
+    if (editor && initialEditorData.data?.text) {
+      const newData = editor.parseEditorState(initialEditorData.data?.text);
+      editor.setEditorState(newData);
+    }
   };
 
   return null;
@@ -108,8 +108,8 @@ function onError(error: Error) {
 //   }
 // }
 
-const  Editor = ({initialEditorData}:{initialEditorData:any}) => {
-
+const Editor = ({ initialEditorData }: { initialEditorData: any }) => {
+  const editorText = initialEditorData.data?.text || "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"heading\",\"version\":1,\"tag\":\"h1\"}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}";
   function prepopulatedRichText() {
     const root = $getRoot();
     if (root.getFirstChild() === null) {
@@ -119,7 +119,7 @@ const  Editor = ({initialEditorData}:{initialEditorData:any}) => {
     }
   }
   const initialConfig = {
-    editorState: initialEditorData.data?.text,
+    editorState: editorText,
     namespace: 'MyEditor',
     nodes: [...MemoryMapNodes],
     theme: MemoryMapTheme,
@@ -127,33 +127,25 @@ const  Editor = ({initialEditorData}:{initialEditorData:any}) => {
   };
   const [isLinkEditMode, setIsLinkEditMode] = useState<boolean>(false);
   const [editorReactState, setEditorReactState] = useState("");
-  let debounceTimer:any = null;
+  let debounceTimer: any = null;
 
   const onChange = (editorState: EditorState) => {
-    // editorState.read(() => {
-    //   // Read the contents of the EditorState here.
-    //   const root = $getRoot();
-    //   const selection = $getSelection();
-
-    //   console.log(root, selection);
-    // });
     const editorStateJSON = JSON.stringify(editorState.toJSON());
     setEditorReactState(editorStateJSON);
-    //setUserEditorData(initialEditorData._id, editorState);
   }
 
-    useEffect(() => {
-      if (debounceTimer) {
-        clearTimeout(debounceTimer);
-      }
-      if(initialEditorData._id){
-        debounceTimer = setTimeout(() => {
-          setUserEditorData(initialEditorData._id, editorReactState);
-          //console.log(event.target.value); // You can handle the changes here
-        }, 5000);
-      }
-    }, [editorReactState]);
-    
+  useEffect(() => {
+    if (debounceTimer) {
+      clearTimeout(debounceTimer);
+    }
+    if (initialEditorData._id) {
+      debounceTimer = setTimeout(() => {
+        setUserEditorData(initialEditorData._id, editorReactState);
+        //console.log(event.target.value); // You can handle the changes here
+      }, 5000);
+    }
+  }, [editorReactState]);
+
 
   return (
     <LexicalComposer initialConfig={initialConfig}>
@@ -163,7 +155,7 @@ const  Editor = ({initialEditorData}:{initialEditorData:any}) => {
           <AutoFocusPlugin />
           <AutoEmbedPlugin />
           <RichTextPlugin
-            contentEditable={<ContentEditable className="editor-input"/>}
+            contentEditable={<ContentEditable className="editor-input" />}
             placeholder={<div className="editor-placeholder">Enter some text...</div>}
             ErrorBoundary={LexicalErrorBoundary}
           />
@@ -171,20 +163,20 @@ const  Editor = ({initialEditorData}:{initialEditorData:any}) => {
           <HistoryPlugin />
           <ImagesPlugin />
           <YouTubePlugin />
-          <MyCustomAutoFocusPlugin initialEditorData ={initialEditorData} />
+          <MyCustomAutoFocusPlugin initialEditorData={initialEditorData} />
         </div>
-      </div>  
+      </div>
     </LexicalComposer>
   );
 };
 
-function mapStateToProps(state:any, ownProps:any) {
+function mapStateToProps(state: any, ownProps: any) {
   return {
     initialEditorData: state.meDetails.editorData
   };
 }
 
-function mapDispatchToProps(dispatch:any) {
+function mapDispatchToProps(dispatch: any) {
   return {
     //sendEditorData: (data:any) => dispatch(editorInfoUpdate(data))
   };
