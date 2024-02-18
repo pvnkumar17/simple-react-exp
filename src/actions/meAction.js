@@ -51,7 +51,7 @@ function initializeToken(dispatch, getState, resolve) {
         });
         dispatch({ type: 'DASHBOARD', payload: { filter: {} } });
     } else {
-        dispatch({type: 'LOGIN'});
+        dispatch({ type: 'LOGIN' });
     };
     return resolve();
 }
