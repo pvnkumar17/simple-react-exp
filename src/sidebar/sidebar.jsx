@@ -32,8 +32,8 @@ const Sidebar = ({ initialTreeData, sendEditorData, setUserDetails }) => {
   }
 
   useEffect(() => {
-    if (initialTreeData) {
-      const copyTreeData = cloneDeep(initialTreeData);
+    if (initialTreeData?.data) {
+      const copyTreeData = cloneDeep(initialTreeData.data);
       setTreeData(convertToNestedJson(copyTreeData));
       FlatenTreeData(copyTreeData);
     }
@@ -43,18 +43,112 @@ const Sidebar = ({ initialTreeData, sendEditorData, setUserDetails }) => {
   const onDrop = (info) => {
     console.log('drop', info);
     const dropKey = info.node.props.eventKey;
+    //const dropOnLeaf = !info.node.children;
     const dragKey = info.dragNode.props.eventKey;
     const dropPos = info.node.props.pos.split('-');
     const dropPosition = info.dropPosition - Number(dropPos[dropPos.length - 1]);
+    if (initialTreeData?.data) {
+          let userData = cloneDeep(initialTreeData);
+          let dragParentId, dropParentId, dropNode, dragNode;
+          userData.data = userData?.data?.map(item => {
 
-    const loop = (data, key, callback) => {
+            const hiNode = item.flatNodes.filter(nod => {
+              if(nod._id === dragKey){
+                dragNode = nod;
+                if(nod.parentId){
+                  dragParentId = nod.parentId;
+                  nod.parentId = dropKey;
+                }
+              }
+              if(nod._id === dropKey){
+                if (nod.type === 'folder'){
+                  dropNode = nod;
+                  nod.children.splice(info.dropPosition, 0, dragKey);
+                }
+                // else if(nod.type === 'file'){
+                //   dropParentId = nod.parentId;
+                // }
+              }
+
+              return nod._id === dragKey || nod._id === dropKey;
+            });
+            if(dragParentId && dropNode){
+              item.flatNodes.filter(flatNode => {
+                    // if (flatNode._id === dropKey && flatNode.type === 'folder') {
+                    //     flatNode.children.push(dragKey)
+                    // }
+                    // if (flatNode._id === dragKey) {
+                    //   dragParentId = flatNode.parentId;
+                    // }
+                    if (flatNode._id === dragParentId) {
+                      flatNode.children.splice(flatNode.children.indexOf(dragKey), 1);
+                    }
+                    return flatNode;
+                });
+              };
+              // if(dropParentId){
+              //   item.flatNodes.filter(flatNode => {
+              //         if (flatNode._id === dropParentId) {
+              //           flatNode.children.splice(info.dropPosition, 0, dragKey);
+              //         }
+              //         return flatNode;
+              //     });
+              //   }
+                return item;
+            });
+          setUserDetails(userData);
+        }
+
+    if (!info.dropToGap) {
+      // Drop on the content
+      // loop(data, dropKey, (item) => {
+      //   item.children = item.children || [];
+      //   // where to insert 
+      //   item.children.push(dragObj);
+      // });
+    } else if (
+      (info.node.props.children || []).length > 0 && // Has children
+      info.node.props.expanded && // Is expanded
+      dropPosition === 1 // On the bottom gap
+    ) {
+      // loop(data, dropKey, (item) => {
+      //   item.children = item.children || [];
+      //   // where to insert 
+      //   item.children.unshift(dragObj);
+      // });
+    } else {
+      // Drop on the gap
+      // let ar;
+      // let i;
+      // loop(data, dropKey, (item, index, arr) => {
+      //   ar = arr;
+      //   i = index;
+      // });
+      // if (dropPosition === -1) {
+      //   ar.splice(i, 0, dragObj);
+      // } else {
+      //   ar.splice(i + 1, 0, dragObj);
+      // }
+    }
+
+    //setTreeData(data);
+  };
+
+  const dropin = (info) => {
+    console.log('drop', info);
+    const dropKey = info.node.key;
+    const dragKey = info.dragNode.key;
+    const dropPos = info.node.pos.split('-');
+    const dropPosition = info.dropPosition - Number(dropPos[dropPos.length - 1]);
+
+    const loopin = (data, key, callback) => {
       data.forEach((item, index, arr) => {
-        if (item.key === key) {
+        if (item._id === key) {
           callback(item, index, arr);
           return;
         }
         if (item.children) {
-          loop(item.children, key, callback);
+          loopin(item.children, key, callback);
         }
       });
     };
@@ -62,33 +156,24 @@ const Sidebar = ({ initialTreeData, sendEditorData, setUserDetails }) => {
 
     // Find dragObject
     let dragObj;
-    loop(data, dragKey, (item, index, arr) => {
+    loopin(data, dragKey, (item, index, arr) => {
       arr.splice(index, 1);
       dragObj = item;
     });
 
-    if (!info.dropToGap) {
+    if (dropPosition === 0) {
       // Drop on the content
-      loop(data, dropKey, (item) => {
+      loopin(data, dropKey, item => {
+        // eslint-disable-next-line no-param-reassign
         item.children = item.children || [];
-        // where to insert 
-        item.children.push(dragObj);
-      });
-    } else if (
-      (info.node.props.children || []).length > 0 && // Has children
-      info.node.props.expanded && // Is expanded
-      dropPosition === 1 // On the bottom gap
-    ) {
-      loop(data, dropKey, (item) => {
-        item.children = item.children || [];
-        // where to insert 
+        // where to insert 示例添加到尾部，可以是随意位置
         item.children.unshift(dragObj);
       });
     } else {
-      // Drop on the gap
+      // Drop on the gap (insert before or insert after)
       let ar;
       let i;
-      loop(data, dropKey, (item, index, arr) => {
+      loopin(data, dropKey, (item, index, arr) => {
         ar = arr;
         i = index;
       });
@@ -100,7 +185,14 @@ const Sidebar = ({ initialTreeData, sendEditorData, setUserDetails }) => {
     }
 
     setTreeData(data);
-  };
+  }
+
+  const allowDrop = ({ dropNode, dropPosition }) => {
+    if (!dropNode.children) {
+      if (dropPosition === 0) return false;
+    }
+    return true;
+  }
 
   const handleMenuAction = (node, type) => {
     const payload = {
@@ -175,8 +267,8 @@ const Sidebar = ({ initialTreeData, sendEditorData, setUserDetails }) => {
   };
 
   useEffect(() => {
-    if (selectedNode?._id) {
-      window.location.hash = selectedNode.type === 'file' ? selectedNode._id : '';
+    if (selectedNode?.slug) {
+      window.location.hash = selectedNode.type === 'file' ? selectedNode.slug : '';
       sendEditorData(selectedNode);
     } else {
       window.location.hash = '';
@@ -187,7 +279,8 @@ const Sidebar = ({ initialTreeData, sendEditorData, setUserDetails }) => {
 
   return (
     <Tree
-      onDrop={onDrop}
+      onDrop={dropin}
+      allowDrop={allowDrop}
       defaultExpandedKeys={[treeData[0]._id]}
       autoExpandParent
       draggable={true}
@@ -201,7 +294,7 @@ const Sidebar = ({ initialTreeData, sendEditorData, setUserDetails }) => {
 function mapStateToProps(state, ownProps) {
   console.log(state);
   return {
-    initialTreeData: state.meDetails.user?.data
+    initialTreeData: state.meDetails.user
   };
 }
 

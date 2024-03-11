@@ -1,4 +1,4 @@
-import Editor from "../../editor/editorTS";
+import Editor from "../../editor/editor";
 import Sidebar from "../../sidebar/sidebar";
 
 function Home() {
