@@ -19,6 +19,7 @@ export default {
 		state: {},
 		roles: [],
 		refreshTokenFlag: false,
+		deletedNodes: [],
 		editorData: {
 			"_id": "",
 			"title": "iphone1",

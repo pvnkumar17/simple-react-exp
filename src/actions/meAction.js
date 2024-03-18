@@ -58,7 +58,7 @@ function initializeToken(dispatch, getState, resolve) {
 
 export function handleRefreshSuccess(response, dispatch, resolve) {
     dispatch(stateUpdate({ LOGGED_IN: true, AUTHENTICATING: false }));
-    setTokens(response.accessToken);
+    setUser(response);
     return resolve();
 }
 
@@ -76,10 +76,11 @@ function removeTokens() {
 
 }
 
-function setTokens(accessTokenStorage) {
-    if (accessTokenStorage) {
-        accessToken = accessTokenStorage;
-        localStorage.setItem('apiToken', accessTokenStorage);
+function setUser(res) {
+    if (res) {
+        accessToken = res.accessToken;
+        localStorage.setItem('apiToken', res.accessToken);
+        localStorage.setItem('user', JSON.stringify(res.user));
     }
     //return { type: constants.REFRESH_TOKEN_SUCCESS, refreshTokenStorage };
 
@@ -93,6 +94,9 @@ function initializeFromStorage() {
 
 export function userInfoSucess(data) {
     return { type: constants.USER_INFO_SUCCESS, data };
+}
+export function deletedNodes(data) {
+    return { type: constants.DELETED_NODES, data };
 }
 
 export function editorInfoUpdate(data) {

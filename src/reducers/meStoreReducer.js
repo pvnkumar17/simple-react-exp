@@ -11,6 +11,8 @@ export default function meReducer(state = initialState.meData, action) {
       return Object.assign({}, state, { user: action.data });
     case 'EDITOR_INFO_UPDATE':
       return Object.assign({}, state, { editorData: action.data });
+    case 'DELETED_NODES':
+      return Object.assign({}, state, { deletedNodes: action.data });
     default:
       return state;
   }

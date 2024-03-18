@@ -24,6 +24,10 @@
   color: white;
 }
 
+.trash-container {
+  margin-top: 100px;
+}
+
 .App-link {
   color: #61dafb;
 }

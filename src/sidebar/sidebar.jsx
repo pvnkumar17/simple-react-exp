@@ -4,7 +4,7 @@ import DropDown, { DropDownItem } from '../ui/DropDown';
 import "rc-tree/assets/index.css"
 import { connect } from 'react-redux';
 import { editorInfoUpdate, userInfoSucess } from '../actions/meAction';
-import { getUserDetails, menuActonHandle } from '../services/meService';
+import { getUserDetails, menuActonHandle, deleteAction, renameAction } from '../services/meService';
 import { convertToNestedJson } from '../utils/convertToNestedJson';
 import { cloneDeep, find } from 'lodash';
 
@@ -211,6 +211,33 @@ const Sidebar = ({ initialTreeData, sendEditorData, setUserDetails }) => {
     );
   };
 
+  const renameNode = (node, type) => {
+    const nodeId = node._id;
+    const payload = {
+      "title": `title ${Math.floor(Math.random() * 10)}`,
+    }
+    renameAction(payload, nodeId).then(res => {
+      if (res) {
+        getUserDetails().then(data => setUserDetails(data)).catch(error => {
+          throw (error);
+        })
+      }
+    }
+    );
+  };
+
+  const deleteNode = (node) => {
+    const nodeId = node._id;
+    deleteAction(nodeId).then(res => {
+      if (res) {
+        getUserDetails().then(data => setUserDetails(data)).catch(error => {
+          throw (error);
+        })
+      }
+    }
+    );
+  };
+
   const MenuAction = ({ item }) => {
 
     return (
@@ -228,14 +255,17 @@ const Sidebar = ({ initialTreeData, sendEditorData, setUserDetails }) => {
         <DropDownItem
           onClick={() => handleMenuAction(item, 'file')}
           className="item">
-          <span className="text">add File</span>
+          <span className="text">Add File</span>
         </DropDownItem>
         <DropDownItem
-          onClick={() => {
-            ;
-          }}
+          onClick={() => deleteNode(item)}
           className="item">
-          <span className="text">delete</span>
+          <span className="text">Delete</span>
+        </DropDownItem>
+        <DropDownItem
+          onClick={() => renameNode(item)}
+          className="item">
+          <span className="text">Rename</span>
         </DropDownItem>
       </DropDown>
     )
