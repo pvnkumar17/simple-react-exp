@@ -1,9 +1,19 @@
+import { useState } from 'react';
 import { connect } from 'react-redux';
-import DropDown, { DropDownItem } from '../../ui/DropDown';
+import {
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+} from 'reactstrap';
 import './profile.css';
 
 const Profile = ({redirectTo, refreshToken
 }) => {
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const toggle = () => setDropdownOpen(!dropdownOpen);
+
   const user = JSON.parse(localStorage.getItem('user'));
   const logoutUser = () => {
     const token = localStorage.getItem('apiToken');
@@ -14,19 +24,16 @@ const Profile = ({redirectTo, refreshToken
     }
   };
   return (
-    <DropDown
-        disabled={false}
-        buttonClassName="profile"
-        buttonLabel={<div><div>{user?.username}</div><div>{user?.email}</div></div>}
-        buttonAriaLabel="menu specialized editor node"
-        buttonIconClassName="icon humburger"
-    >
-        <DropDownItem
-          onClick={() => logoutUser()}
-          className="item">
-          <span className="text">Log Out</span>
-        </DropDownItem>
-    </DropDown>
+      <Dropdown isOpen={dropdownOpen} toggle={toggle} direction='down'>
+        <DropdownToggle caret color='none' className='profile'><div><div>{user?.username}</div><div>{user?.email}</div></div></DropdownToggle>
+        <DropdownMenu className='w-100'>
+          <DropdownItem
+            onClick={() => logoutUser()}
+            className="item ml-0">
+            <span className="text">Log Out</span>
+          </DropdownItem>
+        </DropdownMenu>
+    </Dropdown>
   );
 };
 

@@ -9,7 +9,7 @@ const Dashboard = ({ initialEditorData }) => {
   return (
     <div className='memorymap-wrapper'>
       <div>
-      <Profile />
+      <div><Profile /></div>
       <div className='sidebar'><Sidebar /></div>
       <div className="trash-container"><Trash /></div>
       </div>

@@ -1,6 +1,19 @@
 import { useEffect, useState } from 'react';
 import Tree, { TreeNode } from 'rc-tree';
 import DropDown, { DropDownItem } from '../ui/DropDown';
+import {
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Input,
+  Label,
+  Form,
+  FormGroup,
+  Toast,
+  ToastBody
+} from 'reactstrap';
 import "rc-tree/assets/index.css"
 import { connect } from 'react-redux';
 import { editorInfoUpdate, userInfoSucess } from '../actions/meAction';
@@ -24,6 +37,9 @@ const Sidebar = ({ initialTreeData, sendEditorData, setUserDetails }) => {
   ]);
   const [flatedTreeData, setFlatedTreeData] = useState([]);
   const [selectedNode, setSelectedNode] = useState({});
+  const [modal, setModal] = useState(false);
+
+  const toggle = () => setModal(!modal);
 
   const FlatenTreeData = (flatTreeData) => {
     let flatTree = [];
@@ -243,10 +259,10 @@ const Sidebar = ({ initialTreeData, sendEditorData, setUserDetails }) => {
     return (
       <DropDown
         disabled={false}
-        buttonClassName=""
-        buttonLabel="..."
+        buttonClassName="sidebar-action-menu"
+        buttonLabel=""
         buttonAriaLabel="menu specialized editor node"
-        buttonIconClassName="icon humburger">
+        buttonIconClassName="">
         <DropDownItem
           onClick={() => handleMenuAction(item, 'folder')}
           className="item">
@@ -263,7 +279,8 @@ const Sidebar = ({ initialTreeData, sendEditorData, setUserDetails }) => {
           <span className="text">Delete</span>
         </DropDownItem>
         <DropDownItem
-          onClick={() => renameNode(item)}
+          //onClick={() => renameNode(item)}
+          onClick={toggle}
           className="item">
           <span className="text">Rename</span>
         </DropDownItem>
@@ -308,16 +325,28 @@ const Sidebar = ({ initialTreeData, sendEditorData, setUserDetails }) => {
   }, [selectedNode])
 
   return (
-    <Tree
-      onDrop={dropin}
-      allowDrop={allowDrop}
-      defaultExpandedKeys={[treeData[0]._id]}
-      autoExpandParent
-      draggable={true}
-      onSelect={onNodeSelect}
-    >
-      {loop(treeData)}
-    </Tree>
+    <div>
+      <Tree
+        onDrop={dropin}
+        allowDrop={allowDrop}
+        defaultExpandedKeys={[treeData[0]._id]}
+        autoExpandParent
+        draggable={true}
+        onSelect={onNodeSelect}
+      >
+        {loop(treeData)}
+      </Tree>
+      <Modal isOpen={modal} fade={false} toggle={toggle} unmountOnClose={true}>
+        <ModalBody>
+          <Input
+            type="text"
+            placeholder=""
+            //value={renameTitle}
+            rows={5}
+          />
+        </ModalBody>
+      </Modal>
+    </div>
   )
 }
 

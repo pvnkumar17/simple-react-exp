@@ -7,6 +7,7 @@
     position: relative;
     background-image: url(../../images/icons/trash.svg);
     background-repeat: no-repeat;
+    background-position: left;
     padding-left: 30px;
 }
 .trash .chevron-down {
