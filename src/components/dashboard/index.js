@@ -13,7 +13,9 @@ const Dashboard = ({ initialEditorData }) => {
       <div className='sidebar'><Sidebar /></div>
       <div className="trash-container"><Trash /></div>
       </div>
-      {initialEditorData?.type === 'file' && initialEditorData.data && <div className='editor'><Editor /></div>}
+      {initialEditorData.path && <div><p>{initialEditorData.path.join(' / ')}</p></div>}
+      {initialEditorData?.type === 'file' && initialEditorData.data && <div className='editor'>
+          <Editor /></div>}
     </div>
   );
 }

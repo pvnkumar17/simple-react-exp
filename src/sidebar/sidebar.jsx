@@ -309,7 +309,10 @@ const Sidebar = ({ initialTreeData, sendEditorData, setUserDetails }) => {
   const onNodeSelect = (keys, dataInfo) => {
     //console.log('selct', keys, dataInfo);
     const editorNode = findNode(flatedTreeData, keys[0]);
+    const path = keys[0] ? findPath({ children: treeData }, keys[0]) : [];
+    //path.shift();
     console.log(editorNode);
+    editorNode.path = path;
     setSelectedNode(editorNode);
   };
 
@@ -322,7 +325,26 @@ const Sidebar = ({ initialTreeData, sendEditorData, setUserDetails }) => {
       sendEditorData({});
     }
     console.log(selectedNode);
-  }, [selectedNode])
+  }, [selectedNode]);
+
+  const findPath = (treeNode, key, path = []) => {
+    if (treeNode._id === key) {
+      return [...path, treeNode.title];
+    }
+
+    if (treeNode.children) {
+      for (let child of treeNode.children) {
+        const foundPath = findPath(child, key, [...path, treeNode.title]);
+        if (foundPath) {
+          return foundPath;
+        }
+      }
+    }
+
+    return null;
+  };
+
+  // const path = selectedKey ? findPath({ children: treeData }, selectedKey) : [];
 
   return (
     <div>
