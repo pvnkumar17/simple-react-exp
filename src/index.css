@@ -1806,20 +1806,19 @@ hr.selected {
 .sidebar {
  padding: 20px;
 }
-
 .sidebar-action-menu {
   background: none;
   border: none;
   position: relative;
 }
-.sidebar-action-menu:before {
+/* .sidebar-action-menu:before {
   position: absolute;
   top: -10px;
   right: -25px;
   content: '...';
   font-size: 35px;
- }
-
+  height: 0;
+ } */
 .sidebar-action-menu .chevron-down {
   display: none;
 }

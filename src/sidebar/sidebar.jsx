@@ -260,7 +260,7 @@ const Sidebar = ({ initialTreeData, sendEditorData, setUserDetails }) => {
       <DropDown
         disabled={false}
         buttonClassName="sidebar-action-menu"
-        buttonLabel=""
+        buttonLabel="..."
         buttonAriaLabel="menu specialized editor node"
         buttonIconClassName="">
         <DropDownItem
@@ -290,6 +290,7 @@ const Sidebar = ({ initialTreeData, sendEditorData, setUserDetails }) => {
 
   const loop = (data) => {
     return data.map((item) => {
+      //const title = <div><Input className='d-inline disabled border-0' value={item?.title} /><span></span><span> {MenuAction({ item })}</span></div>
       const title = <div><span>{item?.title}</span><span> {MenuAction({ item })}</span></div>
       if (item?.children && item?.children.length) {
         return (
@@ -312,7 +313,9 @@ const Sidebar = ({ initialTreeData, sendEditorData, setUserDetails }) => {
     const path = keys[0] ? findPath({ children: treeData }, keys[0]) : [];
     //path.shift();
     console.log(editorNode);
-    editorNode.path = path;
+    if(editorNode){
+      editorNode.path = path;
+    }
     setSelectedNode(editorNode);
   };
 
