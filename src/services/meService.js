@@ -53,6 +53,18 @@ export const renameAction = (payload, nodeId) => {
     }
 };
 
+export const moveAction = (payload) => {
+    const token = localStorage.getItem('apiToken');
+    if (token) {
+        return CallApi.directCall(`http://localhost:9001/v1/nodes/${payload.nodeId}/move`, {
+            method: 'PUT',
+            data: payload,
+        })
+    } else {
+        return null
+    }
+};
+
 export const deleteAction = (nodeId) => {
     const token = localStorage.getItem('apiToken');
     if (token) {

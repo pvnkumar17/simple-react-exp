@@ -2,6 +2,14 @@
   "name": "brainmap",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "start:auth": "cd .. && cd auth && npm run dev",
+    "start:node": "cd .. && cd node && npm run dev"
+  },
   "dependencies": {
     "@lexical/react": "^0.12.2",
     "@testing-library/jest-dom": "^5.17.0",
@@ -34,12 +42,7 @@
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
+  
   "eslintConfig": {
     "extends": [
       "react-app",
