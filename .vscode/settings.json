@@ -1,0 +1,14 @@
+{
+    "editor.wordWrap": "on",
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "editor.formatOnType": false,
+    "editor.foldingImportsByDefault": false,
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": true
+    },
+    "cSpell.words": [
+        "Organisation"
+    ],
+    
+}

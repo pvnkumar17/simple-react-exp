@@ -1,40 +1,21 @@
-import { useEffect, useState } from 'react';
-import Tree, { TreeNode } from 'rc-tree';
-import DropDown, { DropDownItem } from '../ui/DropDown';
-import {
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Input,
-  Label,
-  Form,
-  FormGroup,
-  Toast,
-  ToastBody
-} from 'reactstrap';
-import "rc-tree/assets/index.css"
-import { connect } from 'react-redux';
-import { editorInfoUpdate, userInfoSucess } from '../actions/meAction';
-import { getUserDetails, menuActonHandle, deleteAction, renameAction } from '../services/meService';
-import { convertToNestedJson } from '../utils/convertToNestedJson';
 import { cloneDeep, find } from 'lodash';
+import Tree, { TreeNode } from 'rc-tree';
+import "rc-tree/assets/index.css";
+import { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import {
+  Input,
+  Modal,
+  ModalBody
+} from 'reactstrap';
+import { editorInfoUpdate, userInfoSucess } from '../actions/meAction';
+import { deleteAction, getUserDetails, menuActonHandle, moveAction, renameAction } from '../services/meService';
+import DropDown, { DropDownItem } from '../ui/DropDown';
+import { convertToNestedJson } from '../utils/convertToNestedJson';
 
 const Sidebar = ({ initialTreeData, sendEditorData, setUserDetails }) => {
 
-  const [treeData, setTreeData] = useState([
-    {
-      "title": "0-0-label",
-      "_id": "0-0-key",
-      "children": [
-        {
-          "title": "0-0-2-label",
-          "_id": "0-0-2-key"
-        }
-      ]
-    }
-  ]);
+  const [treeData, setTreeData] = useState(initialTreeData.data);
   const [flatedTreeData, setFlatedTreeData] = useState([]);
   const [selectedNode, setSelectedNode] = useState({});
   const [modal, setModal] = useState(false);
@@ -152,19 +133,20 @@ const Sidebar = ({ initialTreeData, sendEditorData, setUserDetails }) => {
 
   const dropin = (info) => {
     console.log('drop', info);
-    const dropKey = info.node.key;
-    const dragKey = info.dragNode.key;
+    const droppedOnNodeId = info.node.key;
+    const draggedNodeId = info.dragNode.key;
     const dropPos = info.node.pos.split('-');
     const dropPosition = info.dropPosition - Number(dropPos[dropPos.length - 1]);
-
+    
     const loopin = (data, key, callback) => {
-      data.forEach((item, index, arr) => {
-        if (item._id === key) {
-          callback(item, index, arr);
+      
+      data.forEach((childNode, index, parentArray) => {
+        if (childNode._id === key) {
+          callback(childNode, index, parentArray);
           return;
         }
-        if (item.children) {
-          loopin(item.children, key, callback);
+        if (childNode.children) {
+          loopin(childNode.children, key, callback);
         }
       });
     };
@@ -172,34 +154,50 @@ const Sidebar = ({ initialTreeData, sendEditorData, setUserDetails }) => {
 
     // Find dragObject
     let dragObj;
-    loopin(data, dragKey, (item, index, arr) => {
-      arr.splice(index, 1);
+    loopin(data, draggedNodeId, (item, index, arr) => {
+      arr.splice(index, 1); // Removing dragged item from its previous position
       dragObj = item;
     });
-
+    let backendPayload = {
+      nodeId: draggedNodeId,
+      parentId: '',
+      isRoot: false,
+      sortOrder: 0
+    }
+    
     if (dropPosition === 0) {
       // Drop on the content
-      loopin(data, dropKey, item => {
+      loopin(data, droppedOnNodeId, item => {
         // eslint-disable-next-line no-param-reassign
         item.children = item.children || [];
-        // where to insert 示例添加到尾部，可以是随意位置
+        // where to insert
         item.children.unshift(dragObj);
+        backendPayload.sortOrder = 1; // Because we are inserting at first position
+        backendPayload.parentId = item._id;
+        backendPayload.isRoot = item.isRoot;
       });
     } else {
       // Drop on the gap (insert before or insert after)
       let ar;
       let i;
-      loopin(data, dropKey, (item, index, arr) => {
+      loopin(data, droppedOnNodeId, (item, index, arr) => {
         ar = arr;
         i = index;
+        backendPayload.parentId = item.type === 'file' ? item.parentId :  item._id;
+        backendPayload.isRoot = item.isRoot;
+        
       });
+      
       if (dropPosition === -1) {
         ar.splice(i, 0, dragObj);
       } else {
         ar.splice(i + 1, 0, dragObj);
       }
+      backendPayload.sortOrder = ar.findIndex(node => node._id === backendPayload.nodeId) + 1;
     }
-
+   
+    console.log(backendPayload);
+    moveNode(backendPayload);
     setTreeData(data);
   }
 
@@ -225,6 +223,12 @@ const Sidebar = ({ initialTreeData, sendEditorData, setUserDetails }) => {
       }
     }
     );
+  };
+
+  const moveNode = async (payload) => {
+    
+    const result = await moveAction(payload);
+    
   };
 
   const renameNode = (node, type) => {
