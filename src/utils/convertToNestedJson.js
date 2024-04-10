@@ -1,5 +1,5 @@
 export function convertToNestedJson(inputObject1) {
-    const inputObject = [...inputObject1]
+    const inputObject = [...inputObject1];
     const idMap = new Map();
 
     // Create a map of ids to nodes for quick lookup
@@ -23,6 +23,16 @@ export function convertToNestedJson(inputObject1) {
 
     // Flatten the hierarchy into a single array of objects
     const result = hierarchy.reduce((acc, val) => acc.concat(val), []);
+
+    // Sort the nested nodes at each level
+    function sortNestedNodes(node) {
+        if (node.children && node.children.length > 0) {
+            node.children.sort((a, b) => a.sortOrder - b.sortOrder);
+            node.children.forEach((child) => sortNestedNodes(child));
+        }
+    }
+
+    result.forEach((node) => sortNestedNodes(node));
 
     return result;
 }
