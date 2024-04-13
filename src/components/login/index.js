@@ -9,6 +9,7 @@ const Login = ({redirectTo, refreshToken
   const [userName, setUserName] = useState('');
   const [userPwd, setUserPwd] = useState('');
   const [userEmail, setUserEmail] = useState('');
+  const [name, setName] = useState('');
   const [userEmailValid, setUserEmailValid] = useState();
   const [userNameValid, setUserNameValid] = useState();
   const [regiterPage, setregiterPage] = useState(false);
@@ -21,6 +22,7 @@ const Login = ({redirectTo, refreshToken
       "identifier":userName,
       "password": userPwd
   } : {
+    "name":name,
     "username":userName,
     "email":userEmail,
     "password": userPwd
@@ -65,9 +67,9 @@ const Login = ({redirectTo, refreshToken
 
   const handleAvailableData = (res, type) => {
     if(type === 'checkemail'){
-      setUserEmailValid(res.data.valid);
+      setUserEmailValid(res.data.isAvailable);
     }else {
-      setUserNameValid(res.data.valid);
+      setUserNameValid(res.data.isAvailable);
     }
   };
 
@@ -86,6 +88,8 @@ const Login = ({redirectTo, refreshToken
             <button onClick={() => setregiterPage(true)}>{'Sign Up'}</button>
             </>}
             {regiterPage && <>
+            <input type='text' placeholder='name' onChange={(e) => setName(e.target.value)} value={name} />
+            <hr />
               <input type='text' placeholder='user name' onChange={(e) => setUserName(e.target.value)} value={userName} onBlur={() => userName && checkAvailblity('checkusername')} />
               {userNameValid !== undefined && <div>{userNameValid ? 'user name is available' : 'user already exist please try login'}</div>}
               <hr />
