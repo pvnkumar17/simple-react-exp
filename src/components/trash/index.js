@@ -5,10 +5,11 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
+  Button
 } from 'reactstrap';
 import { deletedNodes } from '../../actions/meAction';
 import './trash.css';
-import { getDeletedNodes } from '../../services/meService';
+import { deleteAction, getDeletedNodes } from '../../services/meService';
 
 const Trash = ({deletedNodeList, setDeletedNodes
 }) => {
@@ -19,6 +20,16 @@ const Trash = ({deletedNodeList, setDeletedNodes
       throw (error);
     });
 
+    const deleteNode = (node) => {
+      const nodeId = node.id;
+      deleteAction(nodeId).then(res => {
+        if (res) {
+          listDeletedNodes()
+        }
+      }
+      );
+    };
+
   return (
     <Dropdown isOpen={dropdownOpen} toggle={toggle} direction='down'>
         <DropdownToggle color='none' className='trash' onClick={() => listDeletedNodes()}><div>{'Trash'}</div></DropdownToggle>
@@ -26,6 +37,7 @@ const Trash = ({deletedNodeList, setDeletedNodes
           {deletedNodeList && deletedNodeList.map(item => <DropdownItem
             className="item ml-0">
             <span className="text">{item.title}</span>
+            <Button className='trash-icon' color='none' onClick={() => deleteNode(item)}></Button>
           </DropdownItem>)}
         </DropdownMenu>
     </Dropdown>

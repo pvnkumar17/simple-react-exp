@@ -5,6 +5,12 @@
     border: none;
     cursor: pointer;
     position: relative;
+    background-image: url(../../images/icons/user.svg);
+    background-repeat: no-repeat;
+    background-position: left;
+    padding: 12px;
+    padding-left: 40px;
+    background-size: 11%;
 }
 .profile:after{
     content: "";
