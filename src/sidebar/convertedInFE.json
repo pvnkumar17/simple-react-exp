@@ -1,0 +1,194 @@
+[
+    {
+  __v: 0,
+  _id: "65b4faef1cb9c378e8f16904",
+  children: [
+            {
+  __v: 0,
+  _id: "65b4fba89d3797e52ed95703",
+  children: [],
+  createdAt: "2024-01-27T12:48:40.094Z",
+  createdBy: {
+    email: "pvnk17@gmail.com",
+    iat: 1706359535,
+    userId: "65b4faed1cb9c378e8f16902",
+    username: "pvnk17"
+                },
+  data: {
+    text: "{\&quot;root\&quot;:{\&quot;children\&quot;:[{\&quot;children\&quot;:[{\&quot;detail\&quot;:0,\&quot;format\&quot;:0,\&quot;mode\&quot;:\&quot;normal\&quot;,\&quot;style\&quot;:\&quot;\&quot;,\&quot;text\&quot;:\&quot;iphone1675\&quot;,\&quot;type\&quot;:\&quot;text\&quot;,\&quot;version\&quot;:1}],\&quot;direction\&quot;:\&quot;ltr\&quot;,\&quot;format\&quot;:\&quot;\&quot;,\&quot;indent\&quot;:0,\&quot;type\&quot;:\&quot;heading\&quot;,\&quot;version\&quot;:1,\&quot;tag\&quot;:\&quot;h1\&quot;},{\&quot;children\&quot;:[],\&quot;direction\&quot;:null,\&quot;format\&quot;:\&quot;\&quot;,\&quot;indent\&quot;:0,\&quot;type\&quot;:\&quot;paragraph\&quot;,\&quot;version\&quot;:1},{\&quot;children\&quot;:[{\&quot;detail\&quot;:0,\&quot;format\&quot;:0,\&quot;mode\&quot;:\&quot;normal\&quot;,\&quot;style\&quot;:\&quot;\&quot;,\&quot;text\&quot;:\&quot;text4\&quot;,\&quot;type\&quot;:\&quot;text\&quot;,\&quot;version\&quot;:1}],\&quot;direction\&quot;:\&quot;ltr\&quot;,\&quot;format\&quot;:\&quot;\&quot;,\&quot;indent\&quot;:0,\&quot;type\&quot;:\&quot;paragraph\&quot;,\&quot;version\&quot;:1}],\&quot;direction\&quot;:\&quot;ltr\&quot;,\&quot;format\&quot;:\&quot;\&quot;,\&quot;indent\&quot;:0,\&quot;type\&quot;:\&quot;root\&quot;,\&quot;version\&quot;:1}}"
+                },
+  isRoot: false,
+  parentId: "65b4faef1cb9c378e8f16904",
+  title: "iphone10",
+  type: "file",
+  updatedAt: "2024-02-10T07:43:52.285Z",
+  userId: "65b4faed1cb9c378e8f16902"
+            },
+            {
+  __v: 0,
+  _id: "65b4fbe59d3797e52ed95709",
+  children: [
+                    {
+  __v: 0,
+  _id: "65c7201e6abef320365e7c17",
+  children: [],
+  createdAt: "2024-02-10T07:05:02.183Z",
+  createdBy: {
+    email: "pvnk17@gmail.com",
+    iat: 1707487163,
+    userId: "65b4faed1cb9c378e8f16902",
+    username: "pvnk17"
+                        },
+  data: {
+    text: "{\&quot;root\&quot;:{\&quot;children\&quot;:[{\&quot;children\&quot;:[{\&quot;detail\&quot;:0,\&quot;format\&quot;:0,\&quot;mode\&quot;:\&quot;normal\&quot;,\&quot;style\&quot;:\&quot;\&quot;,\&quot;text\&quot;:\&quot;iphone1675\&quot;,\&quot;type\&quot;:\&quot;text\&quot;,\&quot;version\&quot;:1}],\&quot;direction\&quot;:\&quot;ltr\&quot;,\&quot;format\&quot;:\&quot;\&quot;,\&quot;indent\&quot;:0,\&quot;type\&quot;:\&quot;heading\&quot;,\&quot;version\&quot;:1,\&quot;tag\&quot;:\&quot;h1\&quot;},{\&quot;children\&quot;:[],\&quot;direction\&quot;:null,\&quot;format\&quot;:\&quot;\&quot;,\&quot;indent\&quot;:0,\&quot;type\&quot;:\&quot;paragraph\&quot;,\&quot;version\&quot;:1},{\&quot;children\&quot;:[{\&quot;detail\&quot;:0,\&quot;format\&quot;:0,\&quot;mode\&quot;:\&quot;normal\&quot;,\&quot;style\&quot;:\&quot;\&quot;,\&quot;text\&quot;:\&quot;text4\&quot;,\&quot;type\&quot;:\&quot;text\&quot;,\&quot;version\&quot;:1}],\&quot;direction\&quot;:\&quot;ltr\&quot;,\&quot;format\&quot;:\&quot;\&quot;,\&quot;indent\&quot;:0,\&quot;type\&quot;:\&quot;paragraph\&quot;,\&quot;version\&quot;:1}],\&quot;direction\&quot;:\&quot;ltr\&quot;,\&quot;format\&quot;:\&quot;\&quot;,\&quot;indent\&quot;:0,\&quot;type\&quot;:\&quot;root\&quot;,\&quot;version\&quot;:1}}"
+                        },
+  isRoot: false,
+  parentId: "65b4fbe59d3797e52ed95709",
+  title: "iphone11",
+  type: "file",
+  updatedAt: "2024-02-10T07:42:34.255Z",
+  userId: "65b4faed1cb9c378e8f16902"
+                    }
+                ],
+  createdAt: "2024-01-27T12:49:41.563Z",
+  createdBy: {
+    email: "pvnk17@gmail.com",
+    iat: 1706359535,
+    userId: "65b4faed1cb9c378e8f16902",
+    username: "pvnk17"
+                },
+  data: {
+    text: ""
+                },
+  isRoot: false,
+  parentId: "65b4faef1cb9c378e8f16904",
+  title: "Iphone",
+  type: "folder",
+  updatedAt: "2024-02-10T07:05:02.282Z",
+  userId: "65b4faed1cb9c378e8f16902"
+            },
+            {
+  __v: 0,
+  _id: "65c726fd6abef320365e7c2b",
+  children: [
+                    {
+  __v: 0,
+  _id: "65c730c16abef320365e7c4f",
+  children: [],
+  createdAt: "2024-02-10T08:16:01.919Z",
+  createdBy: {
+    email: "pvnk17@gmail.com",
+    iat: 1707545084,
+    userId: "65b4faed1cb9c378e8f16902",
+    username: "pvnk17"
+                        },
+  data: {
+    text: ""
+                        },
+  isRoot: false,
+  parentId: "65c726fd6abef320365e7c2b",
+  title: "title 1",
+  type: "file",
+  updatedAt: "2024-02-10T08:16:01.919Z",
+  userId: "65b4faed1cb9c378e8f16902"
+                    },
+                    {
+  __v: 0,
+  _id: "65c730d76abef320365e7c55",
+  children: [],
+  createdAt: "2024-02-10T08:16:23.135Z",
+  createdBy: {
+    email: "pvnk17@gmail.com",
+    iat: 1707545084,
+    userId: "65b4faed1cb9c378e8f16902",
+    username: "pvnk17"
+                        },
+  data: {
+    text: ""
+                        },
+  isRoot: false,
+  parentId: "65c726fd6abef320365e7c2b",
+  title: "title 5",
+  type: "file",
+  updatedAt: "2024-02-10T08:16:23.135Z",
+  userId: "65b4faed1cb9c378e8f16902"
+                    }
+                ],
+  createdAt: "2024-02-10T07:34:21.934Z",
+  createdBy: {
+    email: "pvnk17@gmail.com",
+    iat: 1707545084,
+    userId: "65b4faed1cb9c378e8f16902",
+    username: "pvnk17"
+                },
+  data: {
+    text: ""
+                },
+  isRoot: false,
+  parentId: "65b4faef1cb9c378e8f16904",
+  title: "title 5",
+  type: "folder",
+  updatedAt: "2024-02-10T08:16:23.223Z",
+  userId: "65b4faed1cb9c378e8f16902"
+            },
+            {
+  __v: 0,
+  _id: "65c72c466abef320365e7c41",
+  children: [],
+  createdAt: "2024-02-10T07:56:54.774Z",
+  createdBy: {
+    email: "pvnk17@gmail.com",
+    iat: 1707545084,
+    userId: "65b4faed1cb9c378e8f16902",
+    username: "pvnk17"
+                },
+  data: {
+    text: ""
+                },
+  isRoot: false,
+  parentId: "65b4faef1cb9c378e8f16904",
+  title: "title 3",
+  type: "file",
+  updatedAt: "2024-02-10T07:56:54.774Z",
+  userId: "65b4faed1cb9c378e8f16902"
+            },
+            {
+  __v: 0,
+  _id: "65c72fb06abef320365e7c47",
+  children: [],
+  createdAt: "2024-02-10T08:11:28.669Z",
+  createdBy: {
+    email: "pvnk17@gmail.com",
+    iat: 1707545084,
+    userId: "65b4faed1cb9c378e8f16902",
+    username: "pvnk17"
+                },
+  data: {
+    text: ""
+                },
+  isRoot: false,
+  parentId: "65b4faef1cb9c378e8f16904",
+  title: "title 1",
+  type: "file",
+  updatedAt: "2024-02-10T08:11:28.669Z",
+  userId: "65b4faed1cb9c378e8f16902"
+            }
+        ],
+  createdAt: "2024-01-27T12:45:35.040Z",
+  createdBy: {
+    __v: 0,
+    _id: "65b4faed1cb9c378e8f16902",
+    email: "pvnk17@gmail.com",
+    password: "123456780",
+    username: "pvnk17"
+        },
+  data: {
+    text: ""
+        },
+  isRoot: true,
+  title: "Data Science",
+  type: "folder",
+  updatedAt: "2024-02-10T08:11:28.761Z",
+  userId: "65b4faed1cb9c378e8f16902"
+    }
+]

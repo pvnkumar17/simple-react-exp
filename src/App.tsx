@@ -1,16 +1,10 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import Sidebar  from './sidebar/sidebar';
-import { Editor } from './editor/editor';
+import Switcher from './components/Switcher.js';
 
 function App() {
   return (
     <div className="App">
-      <div className='memorymap-wrapper'>
-        <div className='sidebar'><Sidebar /></div>
-        <div className='editor'><Editor /></div>
-      </div>
+        <Switcher />
     </div>
   );
 }
