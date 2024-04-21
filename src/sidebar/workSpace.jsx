@@ -11,9 +11,9 @@ import {
 import { editorInfoUpdate, userInfoSucess } from '../actions/meAction';
 import { deleteAction, getUserDetails, menuActonHandle, moveAction, renameAction } from '../services/meService';
 import DropDown, { DropDownItem } from '../ui/DropDown';
-import { convertToNestedJsonPrivate } from '../utils/convertToNestedJson';
+import { convertToNestedJson, convertToNestedJsonPrivate } from '../utils/convertToNestedJson';
 
-const PrivateWorkSpace = ({ initialTreeData, sendEditorData, setUserDetails }) => {
+const WorkSpace = ({ initialTreeData, sendEditorData, setUserDetails }) => {
 
   const [treeData, setTreeData] = useState(initialTreeData?.data?.privateNodes);
   const [flatedTreeData, setFlatedTreeData] = useState([]);
@@ -31,8 +31,31 @@ const PrivateWorkSpace = ({ initialTreeData, sendEditorData, setUserDetails }) =
   useEffect(() => {
     if (initialTreeData?.data) {
       const copyTreeData = cloneDeep(initialTreeData.data);
-      setTreeData(convertToNestedJsonPrivate(copyTreeData));
-      FlatenTreeData(copyTreeData.privateNodes);
+      const privateNode = {
+        "_id": "6624d635b72c1e0db634e5qa",
+        "title": "Private workspace",
+        "isRoot": true,
+        "type": "folder",
+        "parentId": "",
+        "children": [...convertToNestedJsonPrivate(copyTreeData)],
+        "userId": "",
+        "isPublic": false,
+        "sortOrder": 0,
+    };
+    const publicNode = {
+      "_id": "public0",
+      "title": "Public workspace",
+      "isRoot": true,
+      "type": "folder",
+      "parentId": "",
+      "children": [...convertToNestedJson(copyTreeData)],
+      "userId": "",
+      "isPublic": true,
+      "sortOrder": 1,
+  };
+  
+      setTreeData([privateNode, publicNode]);
+      FlatenTreeData([...copyTreeData.privateNodes, ...copyTreeData.publicNodes]);
     }
   }, [initialTreeData])
 
@@ -214,7 +237,7 @@ const PrivateWorkSpace = ({ initialTreeData, sendEditorData, setUserDetails }) =
       "parentId": node.type !== 'folder' ? node.parentId : node._id,
       "title": `title ${Math.floor(Math.random() * 10)}`,
       "isRoot": false,
-      "isPublic": false
+      "isPublic": node.isPublic
     }
     menuActonHandle(payload).then(res => {
       if (res) {
@@ -278,7 +301,7 @@ const PrivateWorkSpace = ({ initialTreeData, sendEditorData, setUserDetails }) =
           className="item">
           <span className="text">Add File</span>
         </DropDownItem>
-        <DropDownItem
+        {!item?.isRoot && <><DropDownItem
           onClick={() => deleteNode(item)}
           className="item">
           <span className="text">Delete</span>
@@ -288,7 +311,7 @@ const PrivateWorkSpace = ({ initialTreeData, sendEditorData, setUserDetails }) =
           onClick={toggle}
           className="item">
           <span className="text">Rename</span>
-        </DropDownItem>
+        </DropDownItem></>}
       </DropDown>
     )
   }
@@ -336,11 +359,11 @@ const PrivateWorkSpace = ({ initialTreeData, sendEditorData, setUserDetails }) =
   }, [selectedNode]);
 
   const findPath = (treeNode, key, path = []) => {
-    if (treeNode._id === key) {
+    if (treeNode?._id === key) {
       return [...path, treeNode.title];
     }
 
-    if (treeNode.children) {
+    if (treeNode?.children) {
       for (let child of treeNode.children) {
         const foundPath = findPath(child, key, [...path, treeNode.title]);
         if (foundPath) {
@@ -394,4 +417,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PrivateWorkSpace);
+export default connect(mapStateToProps, mapDispatchToProps)(WorkSpace);

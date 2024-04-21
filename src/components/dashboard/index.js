@@ -18,17 +18,20 @@ const Dashboard = ({ initialEditorData, initialTreeData, setUserDetails }) => {
   const changeTitle = (e) => {
     if (initialTreeData?.data) {
       let userData = cloneDeep(initialTreeData);
-      userData.data = userData?.data?.map(item => {
-
-          item.flatNodes.filter(flatNode => {
-              if (flatNode._id === initialEditorData._id) {
-                flatNode.title = e.target.value;
+      userData.data.privateNodes = userData?.data?.privateNodes.map(item => {
+              if (item._id === initialEditorData._id) {
+                item.title = e.target.value;
                 setSelectedTitle(e.target.value)
               }
-              return flatNode;
-          });
           return item;
         });
+        userData.data.publicNodes = userData?.data?.publicNodes.map(item => {
+            if (item._id === initialEditorData._id) {
+              item.title = e.target.value;
+              setSelectedTitle(e.target.value)
+            }
+          return item;
+        });  
       setUserDetails(userData);
     }
   };
