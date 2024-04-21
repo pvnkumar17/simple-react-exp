@@ -13,7 +13,7 @@ export function convertToNestedJson(data) {
 
     // Traverse the data and build the hierarchy
     data.publicNodes.forEach((node) => {
-        if (node.children && node.children.length > 0) {
+        if (node?.children && node.children.length > 0) {
             node.children = node.children.map((childId) => idMap.get(childId));
         }
     });
@@ -24,7 +24,7 @@ export function convertToNestedJson(data) {
     // Sort the nested nodes at each level
     function sortNestedNodes(nodes) {
         nodes.forEach((node) => {
-            if (node.children && node.children.length > 0) {
+            if (node?.children && node.children.length > 0) {
                 node.children.sort((a, b) => a.sortOrder - b.sortOrder);
                 sortNestedNodes(node.children);
             }
@@ -51,7 +51,7 @@ export function convertToNestedJsonPrivate(data) {
 
     // Traverse the data and build the hierarchy
     data.privateNodes.forEach((node) => {
-        if (node.children && node.children.length > 0) {
+        if (node?.children && node.children.length > 0) {
             node.children = node.children.map((childId) => idMap.get(childId));
         }
     });
@@ -62,7 +62,7 @@ export function convertToNestedJsonPrivate(data) {
     // Sort the nested nodes at each level
     function sortNestedNodes(nodes) {
         nodes.forEach((node) => {
-            if (node.children && node.children.length > 0) {
+            if (node?.children && node.children.length > 0) {
                 node.children.sort((a, b) => a.sortOrder - b.sortOrder);
                 sortNestedNodes(node.children);
             }
