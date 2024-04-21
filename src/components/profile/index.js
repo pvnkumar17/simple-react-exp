@@ -25,7 +25,7 @@ const Profile = ({redirectTo, refreshToken
   };
   return (
       <Dropdown isOpen={dropdownOpen} toggle={toggle} direction='down'>
-        <DropdownToggle caret color='none' className='profile'><div><div>{user?.username}</div><div>{user?.email}</div></div></DropdownToggle>
+        <DropdownToggle caret color='none' className='profile'><div className='fw-bold'>{user?.name}</div></DropdownToggle>
         <DropdownMenu className='w-100'>
           <DropdownItem
             onClick={() => logoutUser()}

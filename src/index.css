@@ -1822,3 +1822,21 @@ hr.selected {
 .sidebar-action-menu .chevron-down {
   display: none;
 }
+
+.searchbar-button, .searchbar-button:hover, .searchbar-button:active, .searchbar-button:focus-visible {
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  background-color: #fff !important;
+  border-color: #fff !important;
+  background-image: url(images/search.png);
+  background-repeat: no-repeat;
+  background-position: left;
+  padding: 12px;
+  padding-left: 25px;
+  background-size: 4%;
+  color: #000 !important;
+}
