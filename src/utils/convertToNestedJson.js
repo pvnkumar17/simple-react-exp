@@ -70,6 +70,5 @@ export function convertToNestedJsonPrivate(data) {
     }
 
     sortNestedNodes(hierarchy);
-
     return hierarchy;
 }
