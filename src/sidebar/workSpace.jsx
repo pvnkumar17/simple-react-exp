@@ -12,10 +12,11 @@ import { editorInfoUpdate, userInfoSucess } from '../actions/meAction';
 import { deleteAction, getUserDetails, menuActonHandle, moveAction, renameAction } from '../services/meService';
 import DropDown, { DropDownItem } from '../ui/DropDown';
 import { convertToNestedJson, convertToNestedJsonPrivate } from '../utils/convertToNestedJson';
+import "./workSpace.css";
 
 const WorkSpace = ({ initialTreeData, sendEditorData, setUserDetails }) => {
 
-  const [treeData, setTreeData] = useState(initialTreeData?.data?.privateNodes);
+  const [treeData, setTreeData] = useState([]);
   const [flatedTreeData, setFlatedTreeData] = useState([]);
   const [selectedNode, setSelectedNode] = useState({});
   const [modal, setModal] = useState(false);
@@ -31,129 +32,14 @@ const WorkSpace = ({ initialTreeData, sendEditorData, setUserDetails }) => {
   useEffect(() => {
     if (initialTreeData?.data) {
       const copyTreeData = cloneDeep(initialTreeData.data);
-      const privateNode = {
-        "_id": "6624d635b72c1e0db634e5qa",
-        "title": "Private workspace",
-        "isRoot": true,
-        "type": "folder",
-        "parentId": "",
-        "children": [...convertToNestedJsonPrivate(copyTreeData)],
-        "userId": "",
-        "isPublic": false,
-        "sortOrder": 0,
-    };
-    const publicNode = {
-      "_id": "public0",
-      "title": "Public workspace",
-      "isRoot": true,
-      "type": "folder",
-      "parentId": "",
-      "children": [...convertToNestedJson(copyTreeData)],
-      "userId": "",
-      "isPublic": true,
-      "sortOrder": 1,
-  };
-  
-      setTreeData([privateNode, publicNode]);
+      const hierarchy = [...convertToNestedJsonPrivate(copyTreeData), ...convertToNestedJson(copyTreeData)];
+      console.log(hierarchy)
+      setTreeData(hierarchy);
       FlatenTreeData([...copyTreeData.privateNodes, ...copyTreeData.publicNodes]);
     }
   }, [initialTreeData])
 
-  const [openedMenuKey, setOpenedMenuKey] = useState('');
-  const onDrop = (info) => {
-    console.log('drop', info);
-    const dropKey = info.node.props.eventKey;
-    //const dropOnLeaf = !info.node.children;
-    const dragKey = info.dragNode.props.eventKey;
-    const dropPos = info.node.props.pos.split('-');
-    const dropPosition = info.dropPosition - Number(dropPos[dropPos.length - 1]);
-    if (initialTreeData?.data) {
-          let userData = cloneDeep(initialTreeData);
-          let dragParentId, dropParentId, dropNode, dragNode;
-          userData.data = userData?.data?.map(item => {
-
-            const hiNode = item.flatNodes.filter(nod => {
-              if(nod._id === dragKey){
-                dragNode = nod;
-                if(nod.parentId){
-                  dragParentId = nod.parentId;
-                  nod.parentId = dropKey;
-                }
-              }
-              if(nod._id === dropKey){
-                if (nod.type === 'folder'){
-                  dropNode = nod;
-                  nod.children.splice(info.dropPosition, 0, dragKey);
-                }
-                // else if(nod.type === 'file'){
-                //   dropParentId = nod.parentId;
-                // }
-              }
-
-              return nod._id === dragKey || nod._id === dropKey;
-            });
-            if(dragParentId && dropNode){
-              item.flatNodes.filter(flatNode => {
-                    // if (flatNode._id === dropKey && flatNode.type === 'folder') {
-                    //     flatNode.children.push(dragKey)
-                    // }
-                    // if (flatNode._id === dragKey) {
-                    //   dragParentId = flatNode.parentId;
-                    // }
-                    if (flatNode._id === dragParentId) {
-                      flatNode.children.splice(flatNode.children.indexOf(dragKey), 1);
-                    }
-                    return flatNode;
-                });
-              };
-              // if(dropParentId){
-              //   item.flatNodes.filter(flatNode => {
-              //         if (flatNode._id === dropParentId) {
-              //           flatNode.children.splice(info.dropPosition, 0, dragKey);
-              //         }
-              //         return flatNode;
-              //     });
-              //   }
-                return item;
-            });
-          setUserDetails(userData);
-        }
-
-    if (!info.dropToGap) {
-      // Drop on the content
-      // loop(data, dropKey, (item) => {
-      //   item.children = item.children || [];
-      //   // where to insert 
-      //   item.children.push(dragObj);
-      // });
-    } else if (
-      (info.node.props.children || []).length > 0 && // Has children
-      info.node.props.expanded && // Is expanded
-      dropPosition === 1 // On the bottom gap
-    ) {
-      // loop(data, dropKey, (item) => {
-      //   item.children = item.children || [];
-      //   // where to insert 
-      //   item.children.unshift(dragObj);
-      // });
-    } else {
-      // Drop on the gap
-      // let ar;
-      // let i;
-      // loop(data, dropKey, (item, index, arr) => {
-      //   ar = arr;
-      //   i = index;
-      // });
-      // if (dropPosition === -1) {
-      //   ar.splice(i, 0, dragObj);
-      // } else {
-      //   ar.splice(i + 1, 0, dragObj);
-      // }
-    }
-
-    //setTreeData(data);
-  };
-
+  
   const dropin = (info) => {
     console.log('drop', info);
     const droppedOnNodeId = info.node.key;
@@ -291,7 +177,8 @@ const WorkSpace = ({ initialTreeData, sendEditorData, setUserDetails }) => {
         buttonLabel="..."
         buttonAriaLabel="menu specialized editor node"
         buttonIconClassName="">
-        <DropDownItem
+          {
+            item?.type === 'folder' && <><DropDownItem
           onClick={() => handleMenuAction(item, 'folder')}
           className="item">
           <span className="text">Add folder</span>
@@ -301,6 +188,9 @@ const WorkSpace = ({ initialTreeData, sendEditorData, setUserDetails }) => {
           className="item">
           <span className="text">Add File</span>
         </DropDownItem>
+            </>
+          }
+        
         {!item?.isRoot && <><DropDownItem
           onClick={() => deleteNode(item)}
           className="item">
@@ -317,17 +207,18 @@ const WorkSpace = ({ initialTreeData, sendEditorData, setUserDetails }) => {
   }
 
   const loop = (data) => {
+    
     return data?.map((item) => {
       //const title = <div><Input className='d-inline disabled border-0' value={item?.title} /><span></span><span> {MenuAction({ item })}</span></div>
       const title = <div><span>{item?.title}</span><span> {MenuAction({ item })}</span></div>
-      if (item?.children && item?.children.length) {
-        return (
-          <TreeNode key={item._id} title={title} data={item.data}>
-            {loop(item.children)}
-          </TreeNode>
+      return (
+        <TreeNode key={item._id} title={title} data={item} className={item.isRoot ? 'root' : ''}>
+          if (item?.children?.length) {
+            loop(item.children)
+          }
+        </TreeNode>
         );
-      }
-      return <TreeNode key={item?._id} title={title} ></TreeNode>;
+      
     });
   }
 
@@ -375,17 +266,26 @@ const WorkSpace = ({ initialTreeData, sendEditorData, setUserDetails }) => {
     return null;
   };
 
-  // const path = selectedKey ? findPath({ children: treeData }, selectedKey) : [];
+  const canDrag = ({node}) => {
+    debugger
+    const isRoot =  treeData.find(n => n._id === node.key)?.isRoot
+    return !isRoot;
+  }
 
+  // const path = selectedKey ? findPath({ children: treeData }, selectedKey) : [];
+  
   return (
     <div>
       <Tree
         onDrop={dropin}
         allowDrop={allowDrop}
-        defaultExpandedKeys={[treeData[0]?._id]}
-        autoExpandParent
-        draggable={true}
+        defaultExpandedKeys={treeData?.map(node => node._id)}
+        autoExpandParent={true}
+        draggable={(event) => {
+          return !event.data.isRoot
+        }}
         onSelect={onNodeSelect}
+        
       >
         {loop(treeData)}
       </Tree>
