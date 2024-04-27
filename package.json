@@ -7,8 +7,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "start:auth": "cd ../brainmap && cd auth && npm run dev",
-    "start:node": "cd ../brainmap && cd node && npm run dev"
+    "start:auth": "cd .. && cd auth && npm run dev",
+    "start:node": "cd .. && cd node && npm run dev"
   },
   "dependencies": {
     "@lexical/react": "^0.12.2",

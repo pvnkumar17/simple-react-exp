@@ -1,4 +1,4 @@
-import { cloneDeep, find } from 'lodash';
+import { cloneDeep } from 'lodash';
 import Tree, { TreeNode } from 'rc-tree';
 import "rc-tree/assets/index.css";
 import { useEffect, useState } from 'react';
@@ -9,7 +9,10 @@ import {
   ModalBody
 } from 'reactstrap';
 import { editorInfoUpdate, userInfoSucess } from '../actions/meAction';
+import fileIcon from '../images/icons/create-file.svg';
+import folderIcon from '../images/icons/create-folder.svg';
 import { deleteAction, getUserDetails, menuActonHandle, moveAction, renameAction } from '../services/meService';
+import Button from '../ui/Button';
 import DropDown, { DropDownItem } from '../ui/DropDown';
 import { convertToNestedJson, convertToNestedJsonPrivate } from '../utils/convertToNestedJson';
 import "./workSpace.css";
@@ -42,6 +45,7 @@ const WorkSpace = ({ initialTreeData, sendEditorData, setUserDetails }) => {
   
   const dropin = (info) => {
     console.log('drop', info);
+    
     const droppedOnNodeId = info.node.key;
     const draggedNodeId = info.dragNode.key;
     const dropPos = info.node.pos.split('-');
@@ -170,7 +174,11 @@ const WorkSpace = ({ initialTreeData, sendEditorData, setUserDetails }) => {
 
   const MenuAction = ({ item }) => {
 
-    return (
+    return <span onClick={(event) => event.stopPropagation()}>
+     { item.type === 'folder' &&
+      <><Button className='action-btn' onClick={() => handleMenuAction(item, 'folder')}  small="true"><img  src={folderIcon}/></Button> 
+      <Button className='action-btn'  onClick={() => handleMenuAction(item, 'file')} small="true"><img  src={fileIcon}/></Button> </>
+    }
       <DropDown
         disabled={false}
         buttonClassName="sidebar-action-menu"
@@ -203,14 +211,16 @@ const WorkSpace = ({ initialTreeData, sendEditorData, setUserDetails }) => {
           <span className="text">Rename</span>
         </DropDownItem></>}
       </DropDown>
-    )
+    
+    </span>
   }
 
   const loop = (data) => {
     
     return data?.map((item) => {
       //const title = <div><Input className='d-inline disabled border-0' value={item?.title} /><span></span><span> {MenuAction({ item })}</span></div>
-      const title = <div><span>{item?.title}</span><span> {MenuAction({ item })}</span></div>
+      const title = <div className='tree-title'>
+        <span>{item?.title}</span><span className='menu-action'> {MenuAction({ item })}</span></div>
       return (
         <TreeNode key={item._id} title={title} data={item} className={item.isRoot ? 'root' : ''}>
           if (item?.children?.length) {
@@ -222,18 +232,20 @@ const WorkSpace = ({ initialTreeData, sendEditorData, setUserDetails }) => {
     });
   }
 
-  const findNode = (data, id) => {
-    return find(data, { _id: id });
-  }
-
   const onNodeSelect = (keys, dataInfo) => {
-    //console.log('selct', keys, dataInfo);
-    const editorNode = findNode(flatedTreeData, keys[0]);
+    
+      
+      const editorNode = dataInfo.node.data;
+      
     const path = keys[0] ? findPath({ children: treeData }, keys[0]) : [];
-    //path.shift();
+    
     console.log(editorNode);
     if(editorNode){
       editorNode.path = path;
+    }
+    if(dataInfo.node.data.isRoot) {
+      return; // No state change is needed for root Private & Public folders on click of the node
+      
     }
     setSelectedNode(editorNode);
   };
@@ -250,13 +262,14 @@ const WorkSpace = ({ initialTreeData, sendEditorData, setUserDetails }) => {
   }, [selectedNode]);
 
   const findPath = (treeNode, key, path = []) => {
+    
     if (treeNode?._id === key) {
-      return [...path, treeNode.title];
+      return [...path, {title: treeNode.title, slug: treeNode.slug}];
     }
 
     if (treeNode?.children) {
       for (let child of treeNode.children) {
-        const foundPath = findPath(child, key, [...path, treeNode.title]);
+        const foundPath = findPath(child, key, [...path, {title: treeNode.title, slug: treeNode.slug}]);
         if (foundPath) {
           return foundPath;
         }
@@ -266,11 +279,6 @@ const WorkSpace = ({ initialTreeData, sendEditorData, setUserDetails }) => {
     return null;
   };
 
-  const canDrag = ({node}) => {
-    debugger
-    const isRoot =  treeData.find(n => n._id === node.key)?.isRoot
-    return !isRoot;
-  }
 
   // const path = selectedKey ? findPath({ children: treeData }, selectedKey) : [];
   
@@ -281,6 +289,7 @@ const WorkSpace = ({ initialTreeData, sendEditorData, setUserDetails }) => {
         allowDrop={allowDrop}
         defaultExpandedKeys={treeData?.map(node => node._id)}
         autoExpandParent={true}
+        expandAction='click'
         draggable={(event) => {
           return !event.data.isRoot
         }}
