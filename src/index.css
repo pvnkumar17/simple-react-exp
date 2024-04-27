@@ -1777,6 +1777,7 @@ hr.selected {
 
 .rc-tree-treenode {
  display: flex;
+ align-items: flex-end;
 }
 .rc-tree-treenode .rc-tree-indent {
  position: relative;
@@ -1802,6 +1803,7 @@ hr.selected {
 }
 .memorymap-wrapper {
  display: flex;
+ /* flex-direction: column; */
 }
 .sidebar {
  padding: 20px;

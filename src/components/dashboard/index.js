@@ -1,14 +1,13 @@
+import { connect } from 'react-redux';
 import Editor from "../../editor/editor";
 import Sidebar from "../../sidebar/sidebar";
-import Logout from "../common/logout";
-import { connect } from 'react-redux';
 import Profile from "../profile";
 import Trash from "../trash";
 //import { userInfoSucess } from '../actions/meAction';
-import { cloneDeep, find } from 'lodash';
-import { Input, Button } from "reactstrap";
-import { userInfoSucess } from "../../actions/meAction";
+import { cloneDeep } from 'lodash';
 import { useEffect, useState } from "react";
+import { Button, Input } from "reactstrap";
+import { userInfoSucess } from "../../actions/meAction";
 import { renameAction } from "../../services/meService";
 import Searchbar from "../searchbar";
 
@@ -18,17 +17,20 @@ const Dashboard = ({ initialEditorData, initialTreeData, setUserDetails }) => {
   const changeTitle = (e) => {
     if (initialTreeData?.data) {
       let userData = cloneDeep(initialTreeData);
-      userData.data = userData?.data?.map(item => {
-
-          item.flatNodes.filter(flatNode => {
-              if (flatNode._id === initialEditorData._id) {
-                flatNode.title = e.target.value;
+      userData.data.privateNodes = userData?.data?.privateNodes.map(item => {
+              if (item._id === initialEditorData._id) {
+                item.title = e.target.value;
                 setSelectedTitle(e.target.value)
               }
-              return flatNode;
-          });
           return item;
         });
+        userData.data.publicNodes = userData?.data?.publicNodes.map(item => {
+            if (item._id === initialEditorData._id) {
+              item.title = e.target.value;
+              setSelectedTitle(e.target.value)
+            }
+          return item;
+        });  
       setUserDetails(userData);
     }
   };
@@ -44,22 +46,29 @@ const Dashboard = ({ initialEditorData, initialTreeData, setUserDetails }) => {
     renameAction(payload, nodeId);
   };
   const toggleSeachbar = () => setIsOpenSearchbar(!isOpenSearchbar);
+  
   return (
     <div className='memorymap-wrapper'>
       <div className="w-25">
-      <div className="w-75"><Profile /></div>
-      <Button onClick={toggleSeachbar} className="bg-none searchbar-button">searchbar</Button>
-      <div className='sidebar'><Sidebar /></div>
-      <div className="trash-container"><Trash /></div>
+        <div className="w-75"><Profile /></div>
+        <Button onClick={toggleSeachbar} className="bg-none searchbar-button">searchbar</Button>
+        <div className='sidebar'><Sidebar /></div>
+        <div className="trash-container"><Trash /></div>
       </div>
       <div className="editor-container w-75">
-      {initialEditorData.path && <div><p>{initialEditorData.path.join(' / ')}</p></div>}
-      {initialEditorData.path && <div className="selected-title"><Input value={selectedTitle} onChange={(e) => changeTitle(e)} onBlur={() => renameNode(initialEditorData)} className="border-0"/></div>}
-      {initialEditorData?.type === 'file' && initialEditorData.data && <div className='editor'>
-          <Editor /></div>}
+        {
+          
+        initialEditorData.path && <div><p>{initialEditorData.path.map(path => {
+          return <><a style={{cursor: 'pointer'}} onClick={ () => window.location.hash = path.slug}>{path.title}</a> / </>
+        })}</p></div>}
+        
+        {initialEditorData.path && <div className="selected-title"><Input value={selectedTitle} onChange={(e) => changeTitle(e)} onBlur={() => renameNode(initialEditorData)} className="border-0"/></div>}
+        {initialEditorData?.type === 'file' && initialEditorData.data && <div className='editor'>
+            <Editor /></div>}
+        </div>
+        <Searchbar searchbarOpen={isOpenSearchbar} />
+        
       </div>
-      <Searchbar searchbarOpen={isOpenSearchbar} />
-    </div>
   );
 }
 function mapStateToProps(state, ownProps) {

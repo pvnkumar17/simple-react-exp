@@ -18,7 +18,7 @@ import ImagesPlugin from '../plugins/ImagesPlugin';
 import YouTubePlugin from '../plugins/YouTubePlugin';
 import "./editor.css";
 import { connect } from 'react-redux';
-import { setUserEditorData } from '../services/meService';
+import { getEditorData, setUserEditorData } from '../services/meService';
 import { userInfoSucess } from '../actions/meAction';
 import { cloneDeep, find } from 'lodash';
 
@@ -41,10 +41,13 @@ function MyCustomAutoFocusPlugin({ initialEditorData }) {
     }, [initialEditorData]);
 
     const setInitialEditor = () => {
-        if (editor && initialEditorData.data?.text) {
-            const newData = editor.parseEditorState(initialEditorData.data?.text);
-            editor.setEditorState(newData);
+        getEditorData(initialEditorData?.data || '').then((res) => {
+            if (editor && res?.data.text) {
+                const newData = editor.parseEditorState(res.data.text);
+                editor.setEditorState(newData);
+            }
         }
+        )
     };
 
     return null;
@@ -84,26 +87,24 @@ const Editor = ({ initialEditorData, initialTreeData, sendEditorData }) => {
     }
 
     useEffect(() => {
-        if (debounceTimer) {
-            clearTimeout(debounceTimer);
-        }
-        if (initialEditorData._id) {
-            const userData = cloneDeep(initialTreeData);
-            userData.data = userData?.data?.map(item => {
-                item.flatNodes.map(flatNode => {
-                    if (flatNode._id === initialEditorData._id) {
-                        flatNode.data.text = editorReactState
-                    }
-                    return flatNode;
-                })
-                return item;
-            });
-            sendEditorData(userData);
-            debounceTimer = setTimeout(() => {
-                setUserEditorData(initialEditorData._id, editorReactState);
-                //console.log(event.target.value); // You can handle the changes here
-            }, 5000);
-        }
+        // if (debounceTimer) {
+        //     clearTimeout(debounceTimer);
+        // }
+        // if (initialEditorData._id) {
+        //     const userData = cloneDeep(initialTreeData);
+        //     userData.data = userData?.data?.publicNodes.map(flatNode => {
+        //             if (flatNode._id === initialEditorData._id) {
+        //                 flatNode.data.text = editorReactState
+        //             }
+        //             return flatNode;
+        //         });
+        //     sendEditorData(userData);
+        //     debounceTimer = setTimeout(() => {
+        //         setUserEditorData(initialEditorData._id, editorReactState);
+        //         //console.log(event.target.value); // You can handle the changes here
+        //     }, 5000);
+        // }
+        setUserEditorData(initialEditorData.data, editorReactState);
     }, [editorReactState]);
 
 
