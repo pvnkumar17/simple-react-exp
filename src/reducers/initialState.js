@@ -31,9 +31,7 @@ export default {
 			"createdBy": {
 				"email": "pvnk17@gmail.com",
 			},
-			"data": {
-				"text": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"iphone1\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"heading\",\"version\":1,\"tag\":\"h1\"}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
-			},
+			"data": '',
 			"createdAt": "2024-01-27T12:48:40.094Z",
 			"updatedAt": "2024-02-05T07:57:58.393Z",
 			"__v": 0

@@ -1,38 +1,74 @@
-export function convertToNestedJson(inputObject1) {
-    const inputObject = [...inputObject1];
+export function convertToNestedJson(data) {
+    if (!data || !data.publicNodes || !Array.isArray(data.publicNodes)) {
+        console.error("Invalid input data or missing 'publicNodes' array.");
+        return null;
+    }
+
     const idMap = new Map();
 
     // Create a map of ids to nodes for quick lookup
-    inputObject.forEach((entry) => {
-        entry.flatNodes.forEach((node) => {
-            idMap.set(node._id, node);
-        });
+    data.publicNodes.forEach((node) => {
+        idMap.set(node._id, node);
     });
 
     // Traverse the data and build the hierarchy
-    inputObject.forEach((entry) => {
-        entry.flatNodes.forEach((node) => {
-            if (node.children && node.children.length > 0) {
-                node.children = node.children.map((childId) => idMap.get(childId));
-            }
-        });
+    data.publicNodes.forEach((node) => {
+        if (node?.children && node.children.length > 0) {
+            node.children = node.children.map((childId) => idMap.get(childId));
+        }
     });
 
     // Filter out nodes with parentId (they are now part of the hierarchy)
-    const hierarchy = inputObject.map((entry) => entry.flatNodes.filter((node) => !node.parentId));
-
-    // Flatten the hierarchy into a single array of objects
-    const result = hierarchy.reduce((acc, val) => acc.concat(val), []);
+    const hierarchy = data.publicNodes.filter((node) => !node.parentId);
 
     // Sort the nested nodes at each level
-    function sortNestedNodes(node) {
-        if (node.children && node.children.length > 0) {
-            node.children.sort((a, b) => a.sortOrder - b.sortOrder);
-            node.children.forEach((child) => sortNestedNodes(child));
-        }
+    function sortNestedNodes(nodes) {
+        nodes.forEach((node) => {
+            if (node?.children && node.children.length > 0) {
+                node.children.sort((a, b) => a.sortOrder - b.sortOrder);
+                sortNestedNodes(node.children);
+            }
+        });
     }
 
-    result.forEach((node) => sortNestedNodes(node));
+    sortNestedNodes(hierarchy);
 
-    return result;
+    return hierarchy;
+}
+
+export function convertToNestedJsonPrivate(data) {
+    if (!data || !data.privateNodes || !Array.isArray(data.privateNodes)) {
+        console.error("Invalid input data or missing 'privateNodes' array.");
+        return null;
+    }
+
+    const idMap = new Map();
+
+    // Create a map of ids to nodes for quick lookup
+    data.privateNodes.forEach((node) => {
+        idMap.set(node._id, node);
+    });
+
+    // Traverse the data and build the hierarchy
+    data.privateNodes.forEach((node) => {
+        if (node?.children && node.children.length > 0) {
+            node.children = node.children.map((childId) => idMap.get(childId));
+        }
+    });
+
+    // Filter out nodes with parentId (they are now part of the hierarchy)
+    const hierarchy = data.privateNodes.filter((node) => !node.parentId);
+
+    // Sort the nested nodes at each level
+    function sortNestedNodes(nodes) {
+        nodes.forEach((node) => {
+            if (node?.children && node.children.length > 0) {
+                node.children.sort((a, b) => a.sortOrder - b.sortOrder);
+                sortNestedNodes(node.children);
+            }
+        });
+    }
+
+    sortNestedNodes(hierarchy);
+    return hierarchy;
 }

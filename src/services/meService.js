@@ -17,10 +17,10 @@ export const getDeletedNodes = () => {
     }
 };
 
-export const setUserEditorData = (id, data) => {
+export const setUserEditorData = (editorId, data) => {
     const token = localStorage.getItem('apiToken');
     if (token) {
-        return CallApi.directCall(`http://localhost:9001/v1/nodes/${id}`, {
+        return CallApi.directCall(`http://localhost:9001/v1/editor/${editorId}`, {
             method: 'PUT',
             data: { data: data }
         })
@@ -70,6 +70,16 @@ export const deleteAction = (nodeId) => {
     if (token) {
         return CallApi.directCall(`http://localhost:9001/v1/nodes/${nodeId}`, {
             method: 'DELETE',
+        })
+    } else {
+        return null
+    }
+};
+export const getEditorData = (editorId) => {
+    const token = localStorage.getItem('apiToken');
+    if (token) {
+        return CallApi.directCall(`http://localhost:9001/v1/editor/${editorId}`, {
+            method: 'GET',
         })
     } else {
         return null

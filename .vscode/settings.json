@@ -5,7 +5,8 @@
     "editor.formatOnType": false,
     "editor.foldingImportsByDefault": false,
     "editor.codeActionsOnSave": {
-        "source.organizeImports": true
+        "source.organizeImports": "always",
+        "source.fixAll": "always"
     },
     "cSpell.words": [
         "Organisation"
