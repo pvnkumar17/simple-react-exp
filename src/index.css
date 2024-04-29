@@ -1777,7 +1777,7 @@ hr.selected {
 
 .rc-tree-treenode {
  display: flex;
- align-items: flex-end;
+ align-items: center;
 }
 .rc-tree-treenode .rc-tree-indent {
  position: relative;

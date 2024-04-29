@@ -1,9 +1,19 @@
 .rc-tree .rc-tree-treenode.root {
     margin-top: 2rem;
-    padding:0.25rem;
+    
 }
-.rc-tree .rc-tree-treenode.root:hover {
+.rc-tree .rc-tree-treenode {
+padding: 0.25rem 0;
+}
 
+.rc-tree .rc-tree-treenode.root .rc-tree-node-selected {
+    background-color: inherit;
+    box-shadow: none;
+    opacity: 1;
+}
+
+.rc-tree .rc-tree-treenode:hover {
+    
     background-color: #eee;
 }
 .action-btn {
@@ -21,14 +31,19 @@
     visibility: visible;
 }
 
+.rc-tree .rc-tree-treenode span.rc-tree-switcher.rc-tree-icon__customize, .rc-tree .rc-tree-treenode span.rc-tree-checkbox.rc-tree-icon__customize, .rc-tree .rc-tree-treenode span.rc-tree-iconEle.rc-tree-icon__customize {
+    vertical-align: text-top;
+}
+
 .menu-action {
-    position: 'absolute';
+    position: absolute;
     right: 0;
     visibility: hidden;
     transition: visibility 0.1s;
 }
 
 .action-btn:hover {
+    border-radius: 4px;
     background-color: #eee;
     
     
