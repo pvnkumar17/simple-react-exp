@@ -9,8 +9,10 @@ import {
   ModalBody
 } from 'reactstrap';
 import { editorInfoUpdate, userInfoSucess } from '../actions/meAction';
-import fileIcon from '../images/icons/create-file.svg';
-import folderIcon from '../images/icons/create-folder.svg';
+import createFileIcon from '../images/icons/create-file.svg';
+import createFolderIcon from '../images/icons/create-folder.svg';
+import fileIcon from '../images/icons/file.svg';
+import folderIcon from '../images/icons/folder.svg';
 import { deleteAction, getUserDetails, menuActonHandle, moveAction, renameAction } from '../services/meService';
 import Button from '../ui/Button';
 import DropDown, { DropDownItem } from '../ui/DropDown';
@@ -176,8 +178,8 @@ const WorkSpace = ({ initialTreeData, sendEditorData, setUserDetails }) => {
 
     return <span onClick={(event) => event.stopPropagation()}>
      { item.type === 'folder' &&
-      <><Button className='action-btn' onClick={() => handleMenuAction(item, 'folder')}  small="true"><img  src={folderIcon}/></Button> 
-      <Button className='action-btn'  onClick={() => handleMenuAction(item, 'file')} small="true"><img  src={fileIcon}/></Button> </>
+      <><Button className='action-btn' onClick={() => handleMenuAction(item, 'folder')}  small="true"><img  src={createFolderIcon}/></Button> 
+      <Button className='action-btn'  onClick={() => handleMenuAction(item, 'file')} small="true"><img  src={createFileIcon}/></Button> </>
     }
       <DropDown
         disabled={false}
@@ -222,7 +224,7 @@ const WorkSpace = ({ initialTreeData, sendEditorData, setUserDetails }) => {
       const title = <div className='tree-title'>
         <span>{item?.title}</span><span className='menu-action'> {MenuAction({ item })}</span></div>
       return (
-        <TreeNode key={item._id} title={title} data={item} className={item.isRoot ? 'root' : ''}>
+        <TreeNode key={item._id} title={title} data={item} className={item.isRoot ? 'root' : ''} icon={getIcon(item) }>
           if (item?.children?.length) {
             loop(item.children)
           }
@@ -230,6 +232,13 @@ const WorkSpace = ({ initialTreeData, sendEditorData, setUserDetails }) => {
         );
       
     });
+  }
+
+  const getIcon = (item) => {
+    if(item.isRoot) {
+      return <></>
+    }
+    return <img src = {item.type === 'folder' ? folderIcon : fileIcon} />
   }
 
   const onNodeSelect = (keys, dataInfo) => {
