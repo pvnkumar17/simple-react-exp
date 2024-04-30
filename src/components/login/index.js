@@ -14,6 +14,8 @@ const Login = ({redirectTo, refreshToken
   const [userNameValid, setUserNameValid] = useState();
   const [regiterPage, setregiterPage] = useState(false);
   const [invalidEmail, setInvalidEmail] = useState(false);
+  const [stepTwo, setStepTwo] = useState(false);
+  const [signupStep, setSignupStep] = useState(false);
 
   const submitLoginInfo = (type) => {
     const webService = type !== 'register' ? 'http://localhost:9000/v1/auth/login' : 'http://localhost:9000/v1/auth/register';
@@ -79,28 +81,36 @@ const Login = ({redirectTo, refreshToken
   };
     
   return (
-        <div className='login'>
-            {!regiterPage && <><input type='text' placeholder='user name' onChange={(e) => setUserName(e.target.value)} value={userName} />
-            <hr />
-            <input type='password' placeholder='password' onChange={(e) => setUserPwd(e.target.value)} value={userPwd} />
-            <hr />
-            <input type='submit' value='login' onClick={() => submitLoginInfo()} />
-            <button onClick={() => setregiterPage(true)}>{'Sign Up'}</button>
-            </>}
-            {regiterPage && <>
-            <input type='text' placeholder='name' onChange={(e) => setName(e.target.value)} value={name} />
-            <hr />
-              <input type='text' placeholder='user name' onChange={(e) => setUserName(e.target.value)} value={userName} onBlur={() => userName && checkAvailblity('checkusername')} />
-              {userNameValid !== undefined && <div>{userNameValid ? 'user name is available' : 'user already exist please try login'}</div>}
+      <div className='login'>
+          <div className='container py-5 h-100'>
+              {!regiterPage && <><input type='text' placeholder='user name' onChange={(e) => {setUserName(e.target.value); e.target.value.length > 3 && checkAvailblity('checkusername')} } value={userName} />
               <hr />
-              <input type='email' placeholder='email' onChange={(e) => setUserEmail(e.target.value)} value={userEmail} onBlur={() => userEmail && checkAvailblity('checkemail')} />
-              {userEmailValid !== undefined && <div>{userEmailValid ? 'email is available' : 'email already exist please try login'}</div>}
-              {invalidEmail && <div>{'please enter valid email'}</div>}
+              {!stepTwo && <input type='submit' value='Next' disabled={!userNameValid} onClick={() => setStepTwo(true)} />}
+              {stepTwo && <> <input type='password' placeholder='password' onChange={(e) => setUserPwd(e.target.value)} value={userPwd} />
               <hr />
-              <input type='password' placeholder='password' onChange={(e) => setUserPwd(e.target.value)} value={userPwd} />
+              <input type='submit' value='login' onClick={() => submitLoginInfo()} /></>}
+
+              <div className='mt-5'>Don't have an account? <button onClick={() => setregiterPage(true)}>{'Sign Up'}</button></div>
+              </>}
+              {regiterPage && <>
+              <div>Creat your account</div>
+              
+                {!signupStep &&<><input type='text' placeholder='name' onChange={(e) => setName(e.target.value)} value={name} />
               <hr />
-              <input type='submit' value='Sign Up' disabled={!userNameValid || !userEmailValid || !userPwd} onClick={() => submitLoginInfo('register')} />
-            </>}
+                <input type='email' placeholder='email' onChange={(e) => setUserEmail(e.target.value)} value={userEmail} onBlur={() => userEmail && checkAvailblity('checkemail')} />
+                {userEmailValid !== undefined && <div>{userEmailValid ? 'email is available' : 'email already exist please try login'}</div>}
+                {invalidEmail && <div>{'please enter valid email'}</div>}
+                <hr /> <input type='submit' value='Next' disabled={!userEmailValid} onClick={() => setSignupStep(true)} /></>}
+                {signupStep && <>
+                <div>What should we call you</div>
+                <input type='text' placeholder='user name' onChange={(e) => setUserName(e.target.value)} value={userName} onBlur={() => userName && checkAvailblity('checkusername')} />
+                {userNameValid !== undefined && <div>{userNameValid ? 'user name is available' : 'user already exist please try login'}</div>}
+                <hr />
+                <input type='password' placeholder='password' onChange={(e) => setUserPwd(e.target.value)} value={userPwd} />
+                <hr />
+                <input type='submit' value='Sign Up' disabled={!userNameValid || !userEmailValid || !userPwd} onClick={() => submitLoginInfo('register')} /></>}
+              </>}
+          </div>
         </div>
   );
 };
