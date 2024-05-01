@@ -1,10 +1,14 @@
 import './App.css';
 import Switcher from './components/Switcher.js';
+import TopNavigation from './components/navigation/topNavigation';
 
 function App() {
   return (
     <div className="App">
-        <Switcher />
+        <div className='layout'>
+          <TopNavigation />
+          <Switcher />
+        </div>
     </div>
   );
 }

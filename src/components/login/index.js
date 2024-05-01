@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import { CallApi } from '../../services/apiCalls';
 import { connect } from 'react-redux';
 import { BrainMapApp } from '../../actions/bootaction';
+import { Button, Col, Row } from 'reactstrap';
+import './login.css'
 
 const Login = ({redirectTo, refreshToken
 }) => {
@@ -83,15 +85,22 @@ const Login = ({redirectTo, refreshToken
   return (
       <div className='login'>
           <div className='container py-5 h-100'>
-              {!regiterPage && <><input type='text' placeholder='user name' onChange={(e) => {setUserName(e.target.value); e.target.value.length > 3 && checkAvailblity('checkusername')} } value={userName} />
-              <hr />
-              {!stepTwo && <input type='submit' value='Next' disabled={!userNameValid} onClick={() => setStepTwo(true)} />}
+              <Row>
+                <Col className='h1 mb-5 pb-5'>Organize your learning. <span className='h6 d-block'>Brainstorm, Collaborate, share your ideas.</span></Col>
+              </Row>
+              {!regiterPage && <div className='login-container'>
+                <div className='login-title'>Sign in to Brainmap</div>
+                <Button {...{color:'none'}} className='btn-google'>CONTINUE WITH GOOGLE</Button>
+                <div className='my-4 alternate'>or</div>
+                <input type='text' placeholder='user name' className='mb-5' onChange={(e) => {setUserName(e.target.value); e.target.value.length > 3 && checkAvailblity('checkusername')} } value={userName} />
+                
+              {!stepTwo && <input type='submit' value='Next' disabled={!userNameValid} className='next-btn bg-black' onClick={() => setStepTwo(true)} />}
               {stepTwo && <> <input type='password' placeholder='password' onChange={(e) => setUserPwd(e.target.value)} value={userPwd} />
               <hr />
               <input type='submit' value='login' onClick={() => submitLoginInfo()} /></>}
 
-              <div className='mt-5'>Don't have an account? <button onClick={() => setregiterPage(true)}>{'Sign Up'}</button></div>
-              </>}
+              <div className='mt-5'>Don't have an account? <Button className='link w-auto' color='link' onClick={() => setregiterPage(true)}>{'Sign Up'}</Button></div>
+              </div>}
               {regiterPage && <>
               <div>Creat your account</div>
               
