@@ -1,11 +1,6 @@
 .login-container {
-    max-width: 400px;
-    margin: 0 auto;
-    background-color: #fff;
-    padding: 30px 55px;
+    padding: 0 55px;
     color: #000;
-    border-radius: 10px;
-    border: 1px solid #000;
 }
 
 .h1 {
@@ -45,6 +40,7 @@
 
 .alternate {
     position: relative;
+    text-align: center;
 }
 
 .alternate:after, .alternate::before {
@@ -65,4 +61,15 @@
 .next-btn {
     color: #fff;
     border-radius: 15px;
+}
+.btn-back, .btn-back:hover, .btn-back:active {
+    padding: 10px;
+    border-radius: 0;
+    border-left: 2px solid #000;
+    border-bottom: 2px solid #000;
+    transform: rotate(45deg);
+}
+
+.login-modal .modal-header {
+    border-bottom: none;
 }
