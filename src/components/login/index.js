@@ -15,8 +15,10 @@ const Login = ({redirectTo, refreshToken
   const [regiterPage, setregiterPage] = useState(false);
   const [invalidEmail, setInvalidEmail] = useState(false);
 
+  const auth = process.env.APP_AUTH;
+
   const submitLoginInfo = (type) => {
-    const webService = type !== 'register' ? 'http://localhost:9000/v1/auth/login' : 'http://localhost:9000/v1/auth/register';
+    const webService = type !== 'register' ? `${auth}/v1/auth/login` : `${auth}/v1/auth/register`;
     const payload = type !== 'register' ? {
       "identifierType":"username", 
       "identifier":userName,
@@ -53,7 +55,7 @@ const Login = ({redirectTo, refreshToken
 
   const checkAvailblity = (type) => {
     const payload = type === 'checkemail' ? {'email': userEmail} : {username: userName};
-    CallApi.directCall(`http://localhost:9000/v1/auth/${type}`, {
+    CallApi.directCall(`${auth}/v1/auth/${type}`, {
       method: 'POST',
       headers: {
         Accept: '*/*',
