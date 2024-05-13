@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
-import { CallApi } from '../../services/apiCalls';
+import { useState } from 'react';
 import { connect } from 'react-redux';
 import { BrainMapApp } from '../../actions/bootaction';
+import { CallApi } from '../../services/apiCalls';
 
 const Login = ({redirectTo, refreshToken
 }) => {
@@ -15,10 +15,10 @@ const Login = ({redirectTo, refreshToken
   const [regiterPage, setregiterPage] = useState(false);
   const [invalidEmail, setInvalidEmail] = useState(false);
 
-  const auth = process.env.APP_AUTH;
+  const auth = process.env.REACT_APP_AUTH;
 
   const submitLoginInfo = (type) => {
-    const webService = type !== 'register' ? `${auth}/v1/auth/login` : `${auth}/v1/auth/register`;
+    const webService = type !== 'register' ? `${auth}/v1/login` : `${auth}/v1/register`;
     const payload = type !== 'register' ? {
       "identifierType":"username", 
       "identifier":userName,
@@ -55,7 +55,7 @@ const Login = ({redirectTo, refreshToken
 
   const checkAvailblity = (type) => {
     const payload = type === 'checkemail' ? {'email': userEmail} : {username: userName};
-    CallApi.directCall(`${auth}/v1/auth/${type}`, {
+    CallApi.directCall(`${auth}/v1/${type}`, {
       method: 'POST',
       headers: {
         Accept: '*/*',
