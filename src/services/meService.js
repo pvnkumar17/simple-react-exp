@@ -58,7 +58,7 @@ export const renameAction = (payload, nodeId) => {
 export const moveAction = (payload) => {
     const token = localStorage.getItem('apiToken');
     if (token) {
-        return CallApi.directCall(`${node}//v1//${payload.nodeId}/move`, {
+        return CallApi.directCall(`${node}/v1/${payload.nodeId}/move`, {
             method: 'PUT',
             data: payload,
         })
@@ -70,7 +70,7 @@ export const moveAction = (payload) => {
 export const deleteAction = (nodeId) => {
     const token = localStorage.getItem('apiToken');
     if (token) {
-        return CallApi.directCall(`${node}//v1/${nodeId}`, {
+        return CallApi.directCall(`${node}/v1/${nodeId}`, {
             method: 'DELETE',
         })
     } else {
