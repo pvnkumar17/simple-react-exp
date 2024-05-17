@@ -1,0 +1,78 @@
+body.login-page {
+    background: #d9d9d9;
+}
+.login-container {
+    padding: 0 55px;
+    color: #000;
+}
+
+.h1 {
+    letter-spacing: 1px;
+    font-size: 60px;
+}
+
+.h6 {
+    font-size: 20px;
+}
+
+.login-container input, .login-container button {
+    width: 100%;
+    padding: 10px;
+}
+
+.login-container input {
+    border: 1px solid #000;
+    border-radius: 5px;
+}
+
+.login-title {
+    font-size: 26px;
+    margin-bottom: 40px;
+}
+
+.btn-google {
+    border: 1px solid #000;
+    border-radius: 20px;
+    padding: 8px;
+    background-image: url(../../images/g-logo.png);
+    background-repeat: no-repeat;
+    background-size: 20%;
+    background-position-y: 50%;
+    padding-left: 50px;
+}
+
+.alternate {
+    position: relative;
+    text-align: center;
+}
+
+.alternate:after, .alternate::before {
+    position: absolute;
+    content: "";
+    display: table;
+    border: 1px solid #000;
+    width: 50%;
+    height: 0;
+    right: -20px;
+    top: 12px;
+}
+
+.alternate:before {
+    left: -20px;
+}
+
+.next-btn {
+    color: #fff;
+    border-radius: 15px;
+}
+.btn-back, .btn-back:hover, .btn-back:active {
+    padding: 10px;
+    border-radius: 0;
+    border-left: 2px solid #000;
+    border-bottom: 2px solid #000;
+    transform: rotate(45deg);
+}
+
+.login-modal .modal-header {
+    border-bottom: none;
+}
