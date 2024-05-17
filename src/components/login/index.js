@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { CallApi } from '../../services/apiCalls';
 import { connect } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import { BrainMapApp } from '../../actions/bootaction';
 import { Button, Col, Modal, ModalBody, ModalHeader, Row } from 'reactstrap';
 import './login.css'
@@ -8,6 +9,8 @@ import TopNavigation from '../navigation/topNavigation';
 
 const Login = ({redirectTo, refreshToken
 }) => {
+
+  const pageLocation = useLocation();
 
   const [userName, setUserName] = useState('');
   const [userPwd, setUserPwd] = useState('');
@@ -94,7 +97,20 @@ const Login = ({redirectTo, refreshToken
       setSignupStep(false);
       setRegiterPage(false);
     }
-  }, [isLoginOpen])
+  }, [isLoginOpen]);
+
+  useEffect(() => {
+    if (pageLocation.pathname === '/login') {
+      document.body.classList.add('login-page');
+    } else {
+      document.body.classList.remove('login-page');
+    }
+
+    // Clean up the effect when the component unmounts
+    return () => {
+      document.body.classList.remove('login-page');
+    };
+  }, [pageLocation]);
     
   return (
       <div className='login'>
