@@ -1,9 +1,11 @@
 import { CallApi } from './apiCalls';
 
+  const node = process.env.REACT_APP_NODE;
+
 export const getUserDetails = () => {
     const token = localStorage.getItem('apiToken');
     if (token) {
-        return CallApi.directCall('http://localhost:9001/v1/nodes', {})
+        return CallApi.directCall(`${node}/v1/nodes`, {})
     } else {
         return null
     }
@@ -11,7 +13,7 @@ export const getUserDetails = () => {
 export const getDeletedNodes = () => {
     const token = localStorage.getItem('apiToken');
     if (token) {
-        return CallApi.directCall('http://localhost:9001/v1/nodes/deleted-nodes', {})
+        return CallApi.directCall(`${node}/v1/deleted-nodes`, {})
     } else {
         return null
     }
@@ -20,7 +22,7 @@ export const getDeletedNodes = () => {
 export const setUserEditorData = (editorId, data) => {
     const token = localStorage.getItem('apiToken');
     if (token) {
-        return CallApi.directCall(`http://localhost:9001/v1/editor/${editorId}`, {
+        return CallApi.directCall(`${node}/v1/editor/${editorId}`, {
             method: 'PUT',
             data: { data: data }
         })
@@ -32,7 +34,7 @@ export const setUserEditorData = (editorId, data) => {
 export const menuActonHandle = (payload) => {
     const token = localStorage.getItem('apiToken');
     if (token) {
-        return CallApi.directCall(`http://localhost:9001/v1/nodes/`, {
+        return CallApi.directCall(`${node}/v1/nodes/`, {
             method: 'POST',
             data: payload,
         })
@@ -44,7 +46,7 @@ export const menuActonHandle = (payload) => {
 export const renameAction = (payload, nodeId) => {
     const token = localStorage.getItem('apiToken');
     if (token) {
-        return CallApi.directCall(`http://localhost:9001/v1/nodes/${nodeId}/rename`, {
+        return CallApi.directCall(`${node}/v1/${nodeId}/rename`, {
             method: 'PUT',
             data: payload,
         })
@@ -56,7 +58,7 @@ export const renameAction = (payload, nodeId) => {
 export const moveAction = (payload) => {
     const token = localStorage.getItem('apiToken');
     if (token) {
-        return CallApi.directCall(`http://localhost:9001/v1/nodes/${payload.nodeId}/move`, {
+        return CallApi.directCall(`${node}/v1/${payload.nodeId}/move`, {
             method: 'PUT',
             data: payload,
         })
@@ -68,7 +70,7 @@ export const moveAction = (payload) => {
 export const deleteAction = (nodeId) => {
     const token = localStorage.getItem('apiToken');
     if (token) {
-        return CallApi.directCall(`http://localhost:9001/v1/nodes/${nodeId}`, {
+        return CallApi.directCall(`${node}/v1/${nodeId}`, {
             method: 'DELETE',
         })
     } else {
@@ -78,7 +80,7 @@ export const deleteAction = (nodeId) => {
 export const getEditorData = (editorId) => {
     const token = localStorage.getItem('apiToken');
     if (token) {
-        return CallApi.directCall(`http://localhost:9001/v1/editor/${editorId}`, {
+        return CallApi.directCall(`${node}/v1/editor/${editorId}`, {
             method: 'GET',
         })
     } else {

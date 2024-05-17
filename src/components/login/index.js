@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import { CallApi } from '../../services/apiCalls';
 import { connect } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { BrainMapApp } from '../../actions/bootaction';
 import { Button, Col, Modal, ModalBody, ModalHeader, Row } from 'reactstrap';
 import './login.css'
 import TopNavigation from '../navigation/topNavigation';
+import { CallApi } from '../../services/apiCalls';
 
 const Login = ({redirectTo, refreshToken
 }) => {
@@ -24,8 +24,10 @@ const Login = ({redirectTo, refreshToken
   const [signupStep, setSignupStep] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
 
+  const auth = process.env.REACT_APP_AUTH;
+
   const submitLoginInfo = (type) => {
-    const webService = type !== 'register' ? 'http://localhost:9000/v1/auth/login' : 'http://localhost:9000/v1/auth/register';
+    const webService = type !== 'register' ? `${auth}/v1/login` : `${auth}/v1/register`;
     const payload = type !== 'register' ? {
       "identifierType":"username", 
       "identifier":userName,
@@ -62,7 +64,7 @@ const Login = ({redirectTo, refreshToken
 
   const checkAvailblity = (type) => {
     const payload = type === 'checkemail' ? {'email': userEmail} : {username: userName};
-    CallApi.directCall(`http://localhost:9000/v1/auth/${type}`, {
+    CallApi.directCall(`${auth}/v1/${type}`, {
       method: 'POST',
       headers: {
         Accept: '*/*',
