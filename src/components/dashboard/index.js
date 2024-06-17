@@ -45,13 +45,13 @@ const Dashboard = ({ initialEditorData, initialTreeData, setUserDetails }) => {
     }
     renameAction(payload, nodeId);
   };
-  const toggleSeachbar = () => setIsOpenSearchbar(!isOpenSearchbar);
+  const toggleSearchbar = () => setIsOpenSearchbar(!isOpenSearchbar);
   
   return (
     <div className='memorymap-wrapper'>
       <div className="w-25">
         <div className="w-75"><Profile /></div>
-        <Button onClick={toggleSeachbar} className="bg-none searchbar-button">searchbar</Button>
+        <Button onClick={toggleSearchbar} className="bg-none searchbar-button">searchbar</Button>
         <div className='sidebar'><Sidebar /></div>
         <div className="trash-container"><Trash /></div>
       </div>
@@ -66,7 +66,7 @@ const Dashboard = ({ initialEditorData, initialTreeData, setUserDetails }) => {
         {initialEditorData?.type === 'file' && initialEditorData.data && <div className='editor'>
             <Editor /></div>}
         </div>
-        <Searchbar searchbarOpen={isOpenSearchbar} />
+        <Searchbar searchbarOpen={isOpenSearchbar} toggleDialog={toggleSearchbar} />
         
       </div>
   );

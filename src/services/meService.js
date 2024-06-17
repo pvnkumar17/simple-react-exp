@@ -87,3 +87,41 @@ export const getEditorData = (editorId) => {
         return null
     }
 };
+
+export const search = (searchText, userId) => {
+    // const token = localStorage.getItem('apiToken');
+    // if (token) {
+    //     return CallApi.directCall(`${node}/v1/search`, {})
+    // } else {
+    //     return null
+    // }
+    return new Promise((resolve, reject) => {
+        resolve({
+                "code": "OK",
+            "data": [
+                {
+                    "_id": "6633442a22cb650f4b3acfed",
+                    "title": "Lets test this properly now",
+                    "data": [
+                        {
+                            "row": 1,
+                            "text": "ff"
+                        },
+                        {
+                            "row": 2,
+                            "text": "df"
+                        },
+                        {
+                            "row": 3,
+                            "text": "sss sfig"
+                        }
+                    ],
+                    "type": "file",
+                    "userId": "66333f339fbf76136d3d060c",
+                    "createdBy": "{\"email\":\"testing1234@gmiail.com\",\"username\":\"testing1234\",\"userId\":\"66333f339fbf76136d3d060c\",\"name\":\"testing1234\",\"iat\":1714634547}"
+                }
+            ],
+            "message": "Success"
+        });
+    });
+};
