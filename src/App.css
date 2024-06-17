@@ -44,3 +44,8 @@
     transform: rotate(360deg);
   }
 }
+
+*::selection {
+  background-color: #2383e247;
+  font-weight: 500;
+}
