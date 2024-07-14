@@ -8,7 +8,7 @@ import {
   Modal,
   ModalBody
 } from 'reactstrap';
-import { editorInfoUpdate, userInfoSucess } from '../actions/meAction';
+import { editorInfoUpdate, userInfoSucess, mindMapUpdate } from '../actions/meAction';
 import createFileIcon from '../images/icons/create-file.svg';
 import createFolderIcon from '../images/icons/create-folder.svg';
 import fileIcon from '../images/icons/file.svg';
@@ -19,7 +19,7 @@ import DropDown, { DropDownItem } from '../ui/DropDown';
 import { convertToNestedJson, convertToNestedJsonPrivate } from '../utils/convertToNestedJson';
 import "./workSpace.css";
 
-const WorkSpace = ({ initialTreeData, sendEditorData, setUserDetails }) => {
+const WorkSpace = ({ initialTreeData, sendEditorData, setUserDetails, setMindMapData }) => {
 
   const [treeData, setTreeData] = useState([]);
   const [flatedTreeData, setFlatedTreeData] = useState([]);
@@ -263,9 +263,11 @@ const WorkSpace = ({ initialTreeData, sendEditorData, setUserDetails }) => {
     if (selectedNode?.slug) {
       window.location.hash = selectedNode.type === 'file' ? selectedNode.slug : '';
       sendEditorData(selectedNode);
+      setMindMapData(selectedNode);
     } else {
       window.location.hash = '';
       sendEditorData({});
+      setMindMapData({});
     }
     console.log(selectedNode);
   }, [selectedNode]);
@@ -331,7 +333,8 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
   return {
     sendEditorData: (data) => dispatch(editorInfoUpdate(data)),
-    setUserDetails: (data) => dispatch(userInfoSucess(data))
+    setUserDetails: (data) => dispatch(userInfoSucess(data)),
+    setMindMapData: (data) => dispatch(mindMapUpdate(data))
   };
 }
 

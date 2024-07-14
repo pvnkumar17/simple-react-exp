@@ -102,3 +102,6 @@ export function deletedNodes(data) {
 export function editorInfoUpdate(data) {
     return { type: constants.EDITOR_INFO_UPDATE, data };
 }
+export function mindMapUpdate(data) {
+    return { type: constants.MIND_MAP_UPDATE, data };
+}
