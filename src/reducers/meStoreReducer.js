@@ -13,6 +13,8 @@ export default function meReducer(state = initialState.meData, action) {
       return Object.assign({}, state, { editorData: action.data });
     case 'DELETED_NODES':
       return Object.assign({}, state, { deletedNodes: action.data });
+    case 'MIND_MAP_UPDATE':
+      return Object.assign({}, state, { mindMapData: action.data });
     default:
       return state;
   }

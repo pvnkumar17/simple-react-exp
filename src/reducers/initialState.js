@@ -46,7 +46,8 @@ export default {
 			FETCHING_RESOURCE_RIGHTS: false,
 			LOGIN_ERROR: false,
 			APPLY_ONBOARDING: false
-		}
+		},
+		mindMapData: {}
 	}
 }
 
