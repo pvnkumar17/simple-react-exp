@@ -10,6 +10,16 @@ export const getUserDetails = () => {
     return null;
   }
 };
+
+export const fetchMemorymapData = (nodeId) => {
+  const token = localStorage.getItem("apiToken");
+  if (token) {
+    return CallApi.directCall(`${node}/v1/nodes/${nodeId}/mindmap`, {});
+  } else {
+    return null;
+  }
+};
+
 export const getDeletedNodes = () => {
   const token = localStorage.getItem("apiToken");
   if (token) {

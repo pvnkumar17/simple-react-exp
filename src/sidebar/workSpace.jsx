@@ -13,10 +13,10 @@ import createFileIcon from '../images/icons/create-file.svg';
 import createFolderIcon from '../images/icons/create-folder.svg';
 import fileIcon from '../images/icons/file.svg';
 import folderIcon from '../images/icons/folder.svg';
-import { deleteAction, getUserDetails, menuActonHandle, moveAction, renameAction } from '../services/meService';
+import { deleteAction, fetchMemorymapData, getUserDetails, menuActonHandle, moveAction, renameAction } from '../services/meService';
 import Button from '../ui/Button';
 import DropDown, { DropDownItem } from '../ui/DropDown';
-import { convertToNestedJson, convertToNestedJsonPrivate } from '../utils/convertToNestedJson';
+import { convertToNestedJson, convertToNestedJsonMindMap, convertToNestedJsonPrivate } from '../utils/convertToNestedJson';
 import "./workSpace.css";
 
 const WorkSpace = ({ initialTreeData, sendEditorData, setUserDetails, setMindMapData }) => {
@@ -263,7 +263,12 @@ const WorkSpace = ({ initialTreeData, sendEditorData, setUserDetails, setMindMap
     if (selectedNode?.slug) {
       window.location.hash = selectedNode.type === 'file' ? selectedNode.slug : '';
       sendEditorData(selectedNode);
-      setMindMapData(selectedNode);
+      fetchMemorymapData(selectedNode._id).then(res => {
+          const nestedMindMapData = convertToNestedJsonMindMap(res.data);
+          setMindMapData(nestedMindMapData);
+        }
+      );
+      
     } else {
       window.location.hash = '';
       sendEditorData({});
