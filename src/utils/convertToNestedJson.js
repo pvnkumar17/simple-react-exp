@@ -72,3 +72,42 @@ export function convertToNestedJsonPrivate(data) {
     sortNestedNodes(hierarchy);
     return hierarchy;
 }
+
+export function convertToNestedJsonMindMap(data) {
+    if (!data || !data.flatNodes || !Array.isArray(data.flatNodes)) {
+      console.error("Invalid input data or missing 'flatNodes' array.");
+      return null;
+    }
+  
+    const idMap = new Map();
+  
+    // Create a map of ids to nodes for quick lookup
+    data.flatNodes.forEach((node) => {
+      idMap.set(node._id, { ...node, children: [] });
+    });
+  
+    // Traverse the data and build the hierarchy
+    data.flatNodes.forEach((node) => {
+      if (node.parentId) {
+        const parentNode = idMap.get(node.parentId);
+        if (parentNode) {
+          parentNode.children.push(idMap.get(node._id));
+        }
+      }
+    });
+  
+    // Sort the nested nodes at each level
+    function sortNestedNodes(nodes) {
+      nodes.forEach((node) => {
+        if (node.children && node.children.length > 0) {
+          node.children.sort((a, b) => a.sortOrder - b.sortOrder);
+          sortNestedNodes(node.children);
+        }
+      });
+    }
+  
+    sortNestedNodes(data.flatNodes);
+  
+    // Return the object from hierarchy where _id === data._id
+    return idMap.get(data._id) || [];
+  }
