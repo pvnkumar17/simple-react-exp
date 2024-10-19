@@ -88,14 +88,14 @@ const CollapsibleTree = ({ data, sendEditorData, setMindMapData, initialTreeData
       .attr("pointer-events", "all");
 
   const getT = (d) => {
-    if(d.data.type === "file"){
-      const textDetails = d.data.dataDetails.text &&  JSON.parse(d.data.dataDetails.text)?.root?.children?.filter(item => item.type === 'heading') || [];
-      const titleText = textDetails.length && textDetails.map(item => `<div><a>${item.children[0].text}</a></div>`);
-      return `<div><div>${d.data.title}</div> <span>${titleText?.toString()}</span></div>`;
-      //return `<div><div>${d.data.title}</div> ${titleText?.toString()}</div>`;
-    }else {
+    // if(d.data.type === "file"){
+    //   const textDetails = d.data.dataDetails.text &&  JSON.parse(d.data.dataDetails.text)?.root?.children?.filter(item => item.type === 'heading') || [];
+    //   const titleText = textDetails.length && textDetails.map(item => `<div><a>${item.children[0].text}</a></div>`);
+    //   //return `<div><div>${d.data.title}</div> <span>${titleText?.toString()}</span></div>`;
+    //   return `<div>${d.data.title}</div>`;
+    // }else {
       return `<div>${d.data.title}</div>`
-    }
+    //}
   }
 
   function update(event, source) {
@@ -162,8 +162,8 @@ const CollapsibleTree = ({ data, sendEditorData, setMindMapData, initialTreeData
     .html(d => getT(d))
     .on("click", function(d) {
       // Handle the click event
-      if(d.currentTarget.__data__.data.type === "file"){
-        handleMindmapLinkClick(d.currentTarget.__data__.data);
+      if(d.currentTarget.__data__.data.type === "fileText"){
+        handleMindmapLinkClick(d.currentTarget.__data__.parent.data);
       }
   });;
 
