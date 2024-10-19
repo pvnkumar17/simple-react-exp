@@ -85,7 +85,17 @@ export function convertToNestedJsonMindMap(data) {
     data.flatNodes.forEach((node) => {
       idMap.set(node._id, { ...node, children: [] });
     });
-  
+    data.flatNodes.forEach((node) => {
+      if(node.type === "file" && node.dataDetails?.text){
+        const textDetails = JSON.parse(node.dataDetails.text)?.root?.children?.filter(item => item.type === 'heading') || [];
+        const titleText = textDetails.length && textDetails.map((item, index) => {return {_id: index, type: 'fileText', title: item.children[0].text}});
+        if(titleText.length){
+          const textData = idMap.get(node._id);
+          textData.children = titleText;
+        }
+
+      }
+    });
     // Traverse the data and build the hierarchy
     data.flatNodes.forEach((node) => {
       if (node.parentId) {
