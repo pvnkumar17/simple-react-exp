@@ -1,12 +1,13 @@
-import React from 'react';
+import Editor from "../../editor/editor";
+import Sidebar from "../../sidebar/sidebar";
 
-class HomePage extends React.Component {
-
-    render() {
-        return(
-            <div>Home Page</div>
-        )
-    }
+function Home() {
+  return (
+    <div className='memorymap-wrapper'>
+      <div className='sidebar'><Sidebar /></div>
+      <div className='editor'><Editor /></div>
+    </div>
+  );
 }
 
-export default HomePage;
+export default Home;

@@ -1,0 +1,28 @@
+.top-navigation {
+    padding: 20px 0;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.logo {
+    font-size: 20px;
+    color: #000;
+    background: url(../../images/logo.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    padding-left: 40px;
+    text-align: left;
+}
+
+.top-right-nav {
+    display: flex;
+    align-items: center;
+    justify-content: right;
+}
+
+.top-right-nav button {
+    width: 120px;
+    max-width: 120px;
+    color: #000;
+    border-radius: 20px;
+}
