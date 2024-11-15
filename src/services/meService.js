@@ -5,7 +5,8 @@ const node = process.env.REACT_APP_NODE;
 export const getUserDetails = () => {
   const token = localStorage.getItem("apiToken");
   if (token) {
-    return CallApi.directCall(`${node}/v1/nodes`, {});
+    const user = JSON.parse(localStorage.getItem("user"));
+    return CallApi.directCall(`${node}/v1/users/${user?.userId}/nodes`, {});
   } else {
     return null;
   }
