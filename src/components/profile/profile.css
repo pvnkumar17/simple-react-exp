@@ -1,0 +1,39 @@
+.profile {
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    background-image: url(../../images/icons/user.svg);
+    background-repeat: no-repeat;
+    background-position: left;
+    padding: 12px;
+    padding-left: 40px;
+    background-size: 11%;
+}
+.profile:after{
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 23px;
+    border-top: 10px solid #aca0a0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 10px solid transparent;
+}
+
+.profile:before {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 0;
+    border-bottom: 10px solid #aca0a0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 10px solid transparent;
+}
+
+.profile .chevron-down {
+    display: none;
+}

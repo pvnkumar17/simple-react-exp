@@ -1,0 +1,24 @@
+.trash {
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    background-image: url(../../images/icons/trash.svg);
+    background-repeat: no-repeat;
+    background-position: left;
+    padding-left: 30px;
+}
+.trash .chevron-down {
+    display: none;
+}
+
+.trash-icon {
+    padding: 20px;
+    display: inline-block;
+    background-image: url(../../images/icons/trash.svg);
+    background-repeat: no-repeat;
+    background-position: left;
+    cursor: pointer;
+}
