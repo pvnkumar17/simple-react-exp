@@ -25,6 +25,7 @@ const WorkSpace = ({ initialTreeData, sendEditorData, setUserDetails, setMindMap
   const [flatedTreeData, setFlatedTreeData] = useState([]);
   const [selectedNode, setSelectedNode] = useState({});
   const [modal, setModal] = useState(false);
+  const [modalCurrentValue, setModalCurrentValue] = useState('');
 
   const toggle = () => setModal(!modal);
 
@@ -206,15 +207,27 @@ const WorkSpace = ({ initialTreeData, sendEditorData, setUserDetails, setMindMap
           className="item">
           <span className="text">Delete</span>
         </DropDownItem>
-        <DropDownItem
+        {/* <DropDownItem
           //onClick={() => renameNode(item)}
           onClick={toggle}
           className="item">
           <span className="text">Rename</span>
-        </DropDownItem></>}
+        </DropDownItem> */}
+        </>}
+        {item?.isPublic && <DropDownItem
+          onClick={() => shareNode(item)}
+          className="item">
+          <span className="text">Share </span>
+        </DropDownItem>}
       </DropDown>
     
     </span>
+  }
+
+  const shareNode = (item) => {
+    const url = `${window.location.origin}/@${item.createdBy.username}#${item.slug}`;
+    setModalCurrentValue(url);
+    toggle();
   }
 
   const loop = (data) => {
@@ -261,7 +274,7 @@ const WorkSpace = ({ initialTreeData, sendEditorData, setUserDetails, setMindMap
 
   useEffect(() => {
     if (selectedNode?.slug) {
-      window.location.hash = selectedNode.type === 'file' ? selectedNode.slug : '';
+      window.location.hash = selectedNode.slug;
       sendEditorData(selectedNode);
       fetchMemorymapData(selectedNode._id).then(res => {
           const nestedMindMapData = convertToNestedJsonMindMap(res.data);
@@ -280,12 +293,12 @@ const WorkSpace = ({ initialTreeData, sendEditorData, setUserDetails, setMindMap
   const findPath = (treeNode, key, path = []) => {
     
     if (treeNode?._id === key) {
-      return [...path, {title: treeNode.title, slug: treeNode.slug}];
+      return [...path, {title: treeNode.title, slug: treeNode.slug, nodeData: treeNode}];
     }
 
     if (treeNode?.children) {
       for (let child of treeNode.children) {
-        const foundPath = findPath(child, key, [...path, {title: treeNode.title, slug: treeNode.slug}]);
+        const foundPath = findPath(child, key, [...path, {title: treeNode.title, slug: treeNode.slug, nodeData: treeNode }]);
         if (foundPath) {
           return foundPath;
         }
@@ -319,7 +332,7 @@ const WorkSpace = ({ initialTreeData, sendEditorData, setUserDetails, setMindMap
           <Input
             type="text"
             placeholder=""
-            //value={renameTitle}
+            value={modalCurrentValue}
             rows={5}
           />
         </ModalBody>
