@@ -1,5 +1,6 @@
 import { CallApi } from "./apiCalls";
 
+const auth = process.env.REACT_APP_AUTH;
 const node = process.env.REACT_APP_NODE;
 
 export const getUserDetails = () => {
@@ -8,17 +9,24 @@ export const getUserDetails = () => {
     const user = JSON.parse(localStorage.getItem("user"));
     return CallApi.directCall(`${node}/v1/users/${user?.userId}/nodes`, {});
   } else {
-    return null;
+
+      const userId = window.location.pathname.split('@')[1]; // TODO remove hardcorded value with url value
+      return CallApi.directCall(`${auth}/v1/@${userId}`, {}).then(
+        res =>{
+          localStorage.setItem('user', JSON.stringify(res.data));
+          return CallApi.directCall(`${node}/v1/users/${res.data?.id}/nodes`, {})
+        }
+      )
   }
 };
 
 export const fetchMemorymapData = (nodeId) => {
-  const token = localStorage.getItem("apiToken");
-  if (token) {
+  // const token = localStorage.getItem("apiToken");
+  // if (token) {
     return CallApi.directCall(`${node}/v1/nodes/${nodeId}/mindmap`, {});
-  } else {
-    return null;
-  }
+  // } else {
+  //   return null;
+  // }
 };
 
 export const getDeletedNodes = () => {
@@ -31,72 +39,72 @@ export const getDeletedNodes = () => {
 };
 
 export const setUserEditorData = (editorId, data) => {
-  const token = localStorage.getItem("apiToken");
-  if (token) {
+  // const token = localStorage.getItem("apiToken");
+  // if (token) {
     return CallApi.directCall(`${node}/v1/editor/${editorId}`, {
       method: "PUT",
       data: { data: data },
     });
-  } else {
-    return null;
-  }
+  // } else {
+  //   return null;
+  // }
 };
 
 export const menuActonHandle = (payload) => {
-  const token = localStorage.getItem("apiToken");
-  if (token) {
+  // const token = localStorage.getItem("apiToken");
+  // if (token) {
     return CallApi.directCall(`${node}/v1/nodes/`, {
       method: "POST",
       data: payload,
     });
-  } else {
-    return null;
-  }
+  // } else {
+  //   return null;
+  // }
 };
 
 export const renameAction = (payload, nodeId) => {
-  const token = localStorage.getItem("apiToken");
-  if (token) {
+  // const token = localStorage.getItem("apiToken");
+  // if (token) {
     return CallApi.directCall(`${node}/v1/${nodeId}/rename`, {
       method: "PUT",
       data: payload,
     });
-  } else {
-    return null;
-  }
+  // } else {
+  //   return null;
+  // }
 };
 
 export const moveAction = (payload) => {
-  const token = localStorage.getItem("apiToken");
-  if (token) {
+  // const token = localStorage.getItem("apiToken");
+  // if (token) {
     return CallApi.directCall(`${node}/v1/${payload.nodeId}/move`, {
       method: "PUT",
       data: payload,
     });
-  } else {
-    return null;
-  }
+  // } else {
+  //   return null;
+  // }
 };
 
 export const deleteAction = (nodeId) => {
-  const token = localStorage.getItem("apiToken");
-  if (token) {
+  // const token = localStorage.getItem("apiToken");
+  // if (token) {
     return CallApi.directCall(`${node}/v1/${nodeId}`, {
       method: "DELETE",
     });
-  } else {
-    return null;
-  }
+  // } else {
+  //   return null;
+  // }
 };
 export const getEditorData = (editorId) => {
-  const token = localStorage.getItem("apiToken");
-  if (token) {
+  // const token = localStorage.getItem("apiToken");
+  // if (token) {
     return CallApi.directCall(`${node}/v1/editor/${editorId}`, {
       method: "GET",
     });
-  } else {
-    return null;
-  }
+  // } else {
+  //   return null;
+  // }
 };
 
 export const search = async (searchText) => {

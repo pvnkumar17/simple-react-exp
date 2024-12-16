@@ -42,7 +42,8 @@ export function loadInit(resolve) {
 
 function initializeToken(dispatch, getState, resolve) {
     initializeFromStorage();
-    if (accessToken) {
+    const userId = window.location.pathname.split('@')[1];
+    if (accessToken || userId?.length) {
         getUserDetails().then(data => {
             dispatch(userInfoSucess(data));
             //dispatch({ type: 'DASHBOARD', payload: { filter: {} } });
@@ -50,7 +51,7 @@ function initializeToken(dispatch, getState, resolve) {
             throw (error);
         });
         dispatch({ type: 'DASHBOARD', payload: { filter: {} } });
-    } else {
+    }else {
         dispatch({ type: 'LOGIN' });
     };
     return resolve();
