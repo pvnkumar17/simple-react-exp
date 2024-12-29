@@ -6,7 +6,6 @@ export const getUrlParameter =  (name) => {
   var results = regex.exec(Location.search);
   return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
 };
-const userId = window.location.pathname.split('@')[1] || JSON.parse(localStorage.getItem('user')).username;
 window.routeSettings = {};
 
 const routesMap = {
@@ -27,7 +26,7 @@ const routesMap = {
     // },
   },
   DASHBOARD: {
-    path: `/@${userId}`,
+    path: `/@:userId`,
   },
   LOGIN: `/login`,
 

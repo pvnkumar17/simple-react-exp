@@ -109,7 +109,7 @@ export const getEditorData = (editorId) => {
 
 export const search = async (searchText) => {
   const token = localStorage.getItem("apiToken");
-  const { userId } = JSON.parse(localStorage.getItem("user"));
+  const { userId } = JSON.parse(localStorage.getItem("user")) || '';
   if (token) {
     let searchResponse = await CallApi.directCall(
       `${node}/v1/search?userId=${userId}&searchTerm=${encodeURIComponent(

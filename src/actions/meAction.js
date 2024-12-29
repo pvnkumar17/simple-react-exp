@@ -42,7 +42,7 @@ export function loadInit(resolve) {
 
 function initializeToken(dispatch, getState, resolve) {
     initializeFromStorage();
-    const userId = window.location.pathname.split('@')[1];
+    const userId = window.location.pathname.split('@')[1] || JSON.parse(localStorage.getItem('user'))?.username;
     if (accessToken || userId?.length) {
         getUserDetails().then(data => {
             dispatch(userInfoSucess(data));
@@ -50,7 +50,7 @@ function initializeToken(dispatch, getState, resolve) {
         }).catch(error => {
             throw (error);
         });
-        dispatch({ type: 'DASHBOARD', payload: { filter: {} } });
+        dispatch({ type: 'DASHBOARD', payload: { userId } });
     }else {
         dispatch({ type: 'LOGIN' });
     };
