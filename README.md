@@ -1,3 +1,5 @@
+mermaid
+... (
 graph TB
     User["👤 User Browser"]
     
@@ -30,3 +32,4 @@ graph TB
     style Server fill:#f3e5f5
     style Controller fill:#e8f5e9
     style App fill:#fce4ec
+)
